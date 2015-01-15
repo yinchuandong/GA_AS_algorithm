@@ -1,2 +1,2 @@
 # AntSystem
-蚁群算法—Ant Colony System
+蚁群算法—Ant Colony Optimization
