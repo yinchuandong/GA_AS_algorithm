@@ -46,7 +46,6 @@ class Ant {
 	 * 公式中得参数beta
 	 */
 	private double beta = 2.0;
-
 	/**
 	 * 获得蚂蚁当前的路线
 	 * @return
@@ -95,14 +94,13 @@ class Ant {
 	 * @param distance
 	 * @return 如果满足一切约束条件，则返回true；否则返回false
 	 */
-	public boolean selectNextCity(int index, double[] pheromone) {
+	public boolean selectNextCity(int index, double[] pheromone, double[] hotness) {
 		double[] p = new double[count];
 		double sum = 0.0;//信息素概率总和
 		//公式中得分母部分
 		for (int i = 0; i < count; i++) {
 			if (city[i] == 0) {
-				sum += Math.pow(pheromone[i], this.alpha)
-						* (Math.pow(1.0 / sceneList.get(i).getViewCount(), this.beta));
+				sum += Math.pow(pheromone[i], this.alpha) * (Math.pow(hotness[i], this.beta));
 			}
 		}
 		//公式中的分子部分
@@ -110,8 +108,7 @@ class Ant {
 			if (city[i] == 1) {
 				p[i] = 0.0;
 			} else {
-				p[i] = Math.pow(pheromone[i], this.alpha)
-						* (Math.pow(1.0 / sceneList.get(i).getViewCount(), this.beta)) / sum;
+				p[i] = Math.pow(pheromone[i], this.alpha) * (Math.pow(hotness[i], this.beta)) / sum;
 			}
 		}
 		

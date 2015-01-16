@@ -22,19 +22,31 @@ public class ACO {
 	 */
 	int antCount;
 	/**
-	 * 城市两两之间的信息素 公式中的tao
+	 * ant-cycle模型中的Q,信息素的总量
+	 */
+	private double Q = 100000000.0;
+	/**
+	 * 景点的信息素 公式中的tao
 	 */
 	double[] pheromone;
+	/**
+	 * 景点的热度
+	 */
+	double[] hotness;
 	/**
 	 * 城市的数量
 	 */
 	int cityCount;
 	/**
-	 * 最优的路线
+	 * 最好的蚂蚁id
+	 */
+	int bestAntId = 0;
+	/**
+	 * 最优蚂蚁走过的路线
 	 */
 	int[] bestTour;
 	/**
-	 * 当前最优长度
+	 * 最优蚂蚁走过的长度
 	 */
 	int bestLength;
 	
@@ -56,8 +68,10 @@ public class ACO {
 		cityCount = sceneList.size();
 		//初始化信息素 默认为1
 		pheromone = new double[cityCount];
+		hotness = new double[cityCount];
 		for (int i = 0; i < cityCount; i++) {
 			pheromone[i] = 0.8;
+			hotness[i] = (double)sceneList.get(i).getViewCount() / this.Q;
 		}
 		bestLength = Integer.MIN_VALUE;
 		bestTour = new int[cityCount];
@@ -80,7 +94,7 @@ public class ACO {
 				//对该蚂蚁进行城市路线选择
 				for (int j = 1; j < cityCount; j++) {
 					//select需要增加一个返回值
-					if(!ants[i].selectNextCity(j, pheromone)){
+					if(!ants[i].selectNextCity(j, pheromone, hotness)){
 						break;
 					}
 				}
@@ -89,6 +103,7 @@ public class ACO {
 				//判断是否为最优路线
 				if (ants[i].getLength() > bestLength) {
 					//保存最优代
+					bestAntId = i;
 					bestLength = ants[i].getLength();
 					System.out.println("第" + gen + "代, 蚂蚁" + i + "，发现新的解为：" + bestLength);
 					for (int j = 0; j < cityCount; j++) {
@@ -117,16 +132,17 @@ public class ACO {
 	 */
 	private void updatePheromone() {
 		double rou = 0.01;
+		//信息素的衰减
 		for (int i = 0; i < cityCount; i++) {
-			//信息素的衰减
 			pheromone[i] *= (1 - rou);
 		}
+		//被访问过的城市信息素增加
 		for (int i = 0; i < antCount; i++) {
 			for (int j = 0; j < cityCount; j++) {
 				int curId = ants[i].getTour()[j];
 				if(curId != -1){
 					//如果改城市被访问过
-					pheromone[curId] += 1.0 / ants[i].getLength();
+					pheromone[curId] += ants[i].getLength() / Q;
 				}else{
 					return;
 				}
