@@ -1,4 +1,4 @@
-package tour;
+package tourold;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +22,7 @@ class Ant {
 	 * 城市被访问的概率
 	 */
 	private double[] p;
-
+	
 	/**
 	 * 概率的总和
 	 */
@@ -49,11 +49,11 @@ class Ant {
 	private int count;
 
 	/**
-	 * 公式中的参数alpha
+	 * 公式中得参数alpha
 	 */
 	private double alpha = 1.0;
 	/**
-	 * 公式中的参数beta
+	 * 公式中得参数beta
 	 */
 	private double beta = 2.0;
 
@@ -106,7 +106,7 @@ class Ant {
 		tour[0] = random;
 		visitedDays = sceneList.get(random).getVisitDays();
 	}
-
+	
 	/**
 	 * 计算蚂蚁选择景点的概率
 	 * 
@@ -144,7 +144,27 @@ class Ant {
 	 *            下一个城市在tour数组中的id
 	 * @return 如果满足一切约束条件，则返回true；否则返回false
 	 */
-	public boolean selectNextCity(int index) {
+	public boolean selectNextCity(int index, double[] pheromone,
+			double[] hotness) {
+		// --------概率单独提到一个函数中计算，选择完之后要给p[select]=0.0
+//		double[] p = new double[count];
+//		double sum = 0.0;// 信息素概率总和
+//		// 公式中得分母部分
+//		for (int i = 0; i < count; i++) {
+//			if (city[i] == 0) {
+//				sum += Math.pow(pheromone[i], this.alpha)
+//						* (Math.pow(hotness[i], this.beta));
+//			}
+//		}
+//		// 公式中的分子部分
+//		for (int i = 0; i < count; i++) {
+//			if (city[i] == 1) {
+//				p[i] = 0.0;
+//			} else {
+//				p[i] = Math.pow(pheromone[i], this.alpha)
+//						* (Math.pow(hotness[i], this.beta)) / sum;
+//			}
+//		}
 		int select = getRandomCity(p);
 		double day = this.sceneList.get(select).getVisitDays();
 		// 检查当前路线的游玩时间是否合法
@@ -155,7 +175,7 @@ class Ant {
 		tour[index] = select;
 		city[select] = 1;
 		pSum -= p[select];
-		p[select] = 0.0; // 选择过的城市概率设为0，以后就不会被选择到
+		p[select] = 0.0; //选择过的城市概率设为0，以后就不会被选择到
 		return true;
 	}
 
@@ -166,8 +186,7 @@ class Ant {
 	 * @return
 	 */
 	private int getRandomCity(double[] p) {
-		double selectP = new Random(System.currentTimeMillis()).nextDouble()
-				* pSum;
+		double selectP = new Random(System.currentTimeMillis()).nextDouble()*pSum;
 		double sumSel = 0.0;
 		for (int i = 0; i < count; i++) {
 			sumSel += p[i];
