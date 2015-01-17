@@ -42,7 +42,7 @@ public class Main {
 		long begin = System.currentTimeMillis();
 		ArrayList<Scene> list = loadData("./guangzhou.txt");
 		ACO aco = new ACO();
-		aco.init(list, 1000, 3.0);
+		aco.init(list, 100, 3.0);
 		aco.run(1000);
 		aco.reportResult();
 		
