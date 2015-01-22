@@ -1,4 +1,4 @@
-package tourold;
+package aco.tour;
 
 import java.util.ArrayList;
 
@@ -100,7 +100,7 @@ public class ACO {
 				ants[i].calcProb(pheromone, hotness);
 				for (int j = 1; j < cityCount; j++) {
 					// select需要增加一个返回值
-					if (!ants[i].selectNextCity(j, pheromone, hotness)) {
+					if (!ants[i].selectNextCity(j)) {
 						break;
 					}
 				}
@@ -139,12 +139,12 @@ public class ACO {
 	 * 公式2: delta_T_ij(t) = Q/L_k Q为常数，L_k为蚂蚁走过的总长度
 	 */
 	private void updatePheromone() {
-		double rou = 0.01;
+		double rho = 0.01;
 		// 信息素的衰减
 		for (int i = 0; i < cityCount; i++) {
-			pheromone[i] *= (1 - rou);
+			pheromone[i] *= (1 - rho);
 		}
-		// 被访问过的城市信息素增加
+		// 普通蚁群算法，所有蚂蚁都留信息素，被访问过的城市信息素增加
 //		for (int i = 0; i < antCount; i++) {
 //			for (int j = 0; j < cityCount; j++) {
 //				int curId = ants[i].getTour()[j];

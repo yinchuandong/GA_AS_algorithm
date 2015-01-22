@@ -1,4 +1,4 @@
-package tour;
+package aco.tour;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -116,7 +116,7 @@ class Ant {
 	 *            热度
 	 */
 	public void calcProb(double[] pheromone, double[] hotness) {
-		// --------概率单独提到一个函数中计算，选择完之后要给p[select]=0.0
+		this.pSum = 0.0;
 		double sum = 0.0;// 信息素概率总和
 		// 公式中得分母部分
 		for (int i = 0; i < count; i++) {

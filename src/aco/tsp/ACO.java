@@ -1,4 +1,4 @@
-package tsp;
+package aco.tsp;
 
 
 public class ACO {

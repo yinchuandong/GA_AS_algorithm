@@ -1,4 +1,4 @@
-package tsp;
+package aco.tsp;
 
 public class Citys {
 	private String cityName[] = { "北京", "上海", "天津", "重庆", "哈尔滨", "长春", "沈阳",
