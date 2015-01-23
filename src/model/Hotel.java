@@ -15,6 +15,7 @@ public class Hotel implements Comparable<Hotel>{
 	private String hotelAddress;
 	private String phone;
 	private String pic;
+	private double commentCount;
 	private double commentScore;
 	private double mapX;
 	private double mapY;
@@ -58,6 +59,12 @@ public class Hotel implements Comparable<Hotel>{
 	}
 	public void setPic(String pic) {
 		this.pic = pic;
+	}
+	public double getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(double commentCount) {
+		this.commentCount = commentCount;
 	}
 	public double getCommentScore() {
 		return commentScore;
