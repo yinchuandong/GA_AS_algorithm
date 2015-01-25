@@ -197,12 +197,57 @@ public class SceneryUtil {
 	 * @return
 	 */
 	public static ArrayList<Scenery> getSceneryList(String cityId){
-		HashMap<String, Scenery> sceneryMap = SceneryUtil.getSceneryMap(cityId);
-		Iterator<String> iter = sceneryMap.keySet().iterator();
 		ArrayList<Scenery> sceneryList = new ArrayList<Scenery>();
-		while (iter.hasNext()) {
-			String key = (String) iter.next();
-			sceneryList.add(sceneryMap.get(key));
+		LinkedList<String> waitList = new LinkedList<String>();
+		waitList.add(cityId);
+		try {
+			while(!waitList.isEmpty()){
+				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,s.more_desc,s.full_url FROM t_scenery as s WHERE s.parent_sid=?";
+				String[] params = {waitList.poll()};
+				ResultSet set = DbUtil.executeQuery(sql, params);
+				while(set.next()){
+					int sceneLayer = set.getInt("scene_layer");
+					String sid = set.getString("sid");
+					String surl = set.getString("surl");
+					String sname = set.getString("sname");
+					String ambiguitySname = set.getString("ambiguity_sname");
+					String moreDesc = set.getString("more_desc");
+					String fullUrl = set.getString("full_url");
+					int viewCount = set.getInt("view_count");
+					double lng = set.getDouble("lng");
+					double lat = set.getDouble("lat");
+					double mapX = set.getDouble("map_x");
+					double mapY = set.getDouble("map_y");
+					double price = parsePrice(set.getString("price_desc"));
+					double visitDay = getVisitDays(set.getString("recommend_visit_time"));
+					
+					if (sceneLayer == 6) {
+						Scenery scenery = new Scenery();
+						scenery.setSid(sid);
+						scenery.setSurl(surl);
+						scenery.setSname(sname);
+						scenery.setAmbiguitySname(ambiguitySname);
+						scenery.setMoreDesc(moreDesc);
+						scenery.setFullUrl(fullUrl);
+						scenery.setViewCount(viewCount);
+						scenery.setLng(lng);
+						scenery.setLat(lat);
+						scenery.setMapX(mapX);
+						scenery.setMapY(mapY);
+						scenery.setPrice(price);
+						scenery.setVisitDay(visitDay);
+						sceneryList.add(scenery);
+//						System.out.println(sname+":"+price);
+					}else{
+						waitList.offer(sid);
+//						System.err.println(sname+":加入队列");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			DbUtil.close();
 		}
 		return sceneryList;
 	}

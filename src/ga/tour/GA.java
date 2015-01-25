@@ -540,12 +540,9 @@ public class GA {
 		
 		
 		//------------------------------------
-		System.out.println("最佳长度出现代数：");
-		System.out.println(bestGen);
-		System.out.println("最佳长度");
-		System.out.println(bestLen);
-		System.out.println("最佳酒店：");
-		System.out.println(bestHotelIds);
+		System.out.println("最佳长度出现代数：" + bestGen);
+		System.out.println("最佳长度" + bestLen);
+		System.out.println("最佳酒店：" + bestHotelIds);
 		System.out.println("最佳路径：");
 		for (int i = 0; i < sceneryNum; i++) {
 			System.out.print(bestRoute[i] + ",");
