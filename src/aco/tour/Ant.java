@@ -36,7 +36,7 @@ class Ant {
 	/**
 	 * 游玩的天数上边界 默认为3
 	 */
-	double upDays;
+	double maxDay;
 
 	/**
 	 * 记录当前路线的天数总和
@@ -84,13 +84,13 @@ class Ant {
 	 * 
 	 * @param count
 	 *            城市的个数
-	 * @param upDays
+	 * @param maxDay
 	 *            天数的上限
 	 */
-	public void init(ArrayList<Scene> sceneList, double upDays) {
+	public void init(ArrayList<Scene> sceneList, double maxDay) {
 		this.sceneList = sceneList;
 		this.count = sceneList.size();
-		this.upDays = upDays;
+		this.maxDay = maxDay;
 		this.pSum = 0.0;
 		this.p = new double[count];
 		this.city = new int[count];
@@ -148,7 +148,7 @@ class Ant {
 		int select = getRandomCity(p);
 		double day = this.sceneList.get(select).getVisitDays();
 		// 检查当前路线的游玩时间是否合法
-		if (this.visitedDays + day > upDays) {
+		if (this.visitedDays + day > maxDay) {
 			return false;
 		}
 		this.visitedDays += day;

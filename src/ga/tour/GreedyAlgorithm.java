@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import util.AppUtil;
+import util.SceneryUtil;
 import model.Scenery;
 
 
@@ -36,7 +37,7 @@ public class GreedyAlgorithm {
 	/**
 	 * 天数上限
 	 */
-	private double upDay = 3.0;
+	private double maxDay = 3.0;
 	/**
 	 * 天数下限
 	 */
@@ -47,7 +48,7 @@ public class GreedyAlgorithm {
 	private int[][] initPopulation;
 	
 	
-	public GreedyAlgorithm(double downDay, double upDay, int scale, ArrayList<Scenery> sceneryList){
+	public GreedyAlgorithm(double downDay, double maxDay, int scale, ArrayList<Scenery> sceneryList){
 		this.sceneryList = sceneryList;
 		this.scale = scale;
 		routesMap = new HashMap<>();
@@ -80,13 +81,13 @@ public class GreedyAlgorithm {
 					Scenery curScene = sceneryList.get(j);
 					tmpDays += curScene.getVisitDay();
 					distance = getDistance(lastScene, curScene);
-					if (tmpDays > upDay || distance > 200000.0) {
+					if (tmpDays > maxDay || distance > 200000.0) {
 						tmpDays -= curScene.getVisitDay();
 						continue;
 					}
 					tmpRoute += j + ",";
 					tmpViewCount += curScene.getViewCount();
-					if (tmpDays > downDay && tmpDays <= upDay) {
+					if (tmpDays > downDay && tmpDays <= maxDay) {
 						tmpRoute = tmpRoute.substring(0, tmpRoute.length() - 1);
 						Routes routes = new Routes();
 						routes.setRoute(tmpRoute);
@@ -190,6 +191,43 @@ public class GreedyAlgorithm {
 		return initPopulation;
 	}
 	
+	/**
+	 * 使用贪心策略优化适度较差的染色体
+	 * @param chromosome
+	 * @return
+	 */
+	public int[] optimize(int[] chromosome){
+		int len = chromosome.length;
+		int[] optChromo = new int[len];
+		//排序之前的景点对应的id
+		HashMap<String, Integer> orderMap = new HashMap<String, Integer>();
+		ArrayList<Scenery> unAddedList = new ArrayList<Scenery>();
+		double curAddedDays = 0.0;
+		for (int i = 0; i < len; i++) {
+			if(chromosome[i] == 1){
+				curAddedDays += sceneryList.get(i).getVisitDay();
+				optChromo[i] = 1;
+			}else{
+				optChromo[i] = 0;
+				unAddedList.add(sceneryList.get(i));
+				orderMap.put(sceneryList.get(i).getSid(), i);
+			}
+		}
+		//sorted the scene not added to the chromosome
+		Collections.sort(unAddedList);
+		//select the hotter scenery to add in chromosome
+		for (int i = unAddedList.size() - 1; i >= 0; i--) {
+			if(curAddedDays > maxDay){
+				break;
+			}
+			Scenery s = unAddedList.get(i);
+			int originId = orderMap.get(s.getSid());
+			optChromo[originId] = 1;
+			curAddedDays += s.getVisitDay();
+		}
+		return optChromo;
+	}
+	
 	public class Routes implements Comparable<Routes>{
 		private String route;
 		private int viewCount;
@@ -233,10 +271,11 @@ public class GreedyAlgorithm {
 	}
 
 	public static void main(String[] args) throws IOException{
-//		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("622bc401f1153f0fd41f74dd");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("622bc401f1153f0fd41f74dd");
 //		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
-//		GreedyUtil model = new GreedyUtil(2.0, 3.0, 300, sceneryList);
-//		int[][] population =  model.getInitPopulation();
+		GreedyAlgorithm greedy = new GreedyAlgorithm(2.0, 3.0, 300, sceneryList);
+		int[][] population =  greedy.getInitPopulation();
+		int[] optChromo = greedy.optimize(population[0]);
 //		test();
 		System.out.println();
 	}

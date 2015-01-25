@@ -11,7 +11,7 @@ public class ACO {
 	/**
 	 * 游玩的天数 默认为3
 	 */
-	double upDays;
+	double maxDay;
 	/**
 	 * 蚂蚁对象数组
 	 */
@@ -50,7 +50,7 @@ public class ACO {
 	int bestLength;
 
 	public ACO() {
-		this.upDays = 3.0;
+		this.maxDay = 3.0;
 	}
 
 	/**
@@ -60,13 +60,13 @@ public class ACO {
 	 *            景点的列表
 	 * @param antCount
 	 *            蚂蚁的数量
-	 * @param upDays
+	 * @param maxDay
 	 *            游玩的天数
 	 */
-	public void init(ArrayList<Scene> sceneList, int antCount, double upDays) {
+	public void init(ArrayList<Scene> sceneList, int antCount, double maxDay) {
 		this.sceneList = sceneList;
 		this.antCount = antCount;
-		this.upDays = upDays;
+		this.maxDay = maxDay;
 		ants = new Ant[antCount];
 		cityCount = sceneList.size();
 		// 初始化信息素 默认为1
@@ -80,7 +80,7 @@ public class ACO {
 		bestTour = new int[cityCount];
 		for (int i = 0; i < antCount; i++) {
 			ants[i] = new Ant();
-			ants[i].init(sceneList, upDays);
+			ants[i].init(sceneList, maxDay);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class ACO {
 			updatePheromone();
 			// 蚂蚁重新初始化
 			for (int i = 0; i < antCount; i++) {
-				ants[i].init(sceneList, upDays);
+				ants[i].init(sceneList, maxDay);
 			}
 		}
 		System.out.println("end");

@@ -1,6 +1,6 @@
 package model;
 
-public class Scenery {
+public class Scenery implements Comparable<Scenery>{
 
 	private String sid;
 	private String surl;
@@ -100,6 +100,15 @@ public class Scenery {
 	}
 	public void setVisitDay(double visitDay) {
 		this.visitDay = visitDay;
+	}
+	
+	@Override
+	public int compareTo(Scenery s1) {
+		if (this.getViewCount() >= s1.getViewCount()) {
+			return 1;
+		}else{
+			return -1;
+		}
 	}
 	
 	

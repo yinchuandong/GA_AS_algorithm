@@ -1,4 +1,4 @@
-package test;
+package util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,9 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import model.Hotel;
-import util.DbUtil;
 
-public class TestHotel {
+public class HotelUtil {
 	
 	public static void main(String[] args){
 		long begin = System.currentTimeMillis();

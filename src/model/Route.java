@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 public class Route implements Comparable<Route>{
 	
-	private String uid;//Ψһ��ʾ·��
+	private String uid;
 	private String sid;
 	private String surl;
 	private String sname;
 	private String ambiguitySname;
-	private double visitDay;//ʵ����Ҫ���ʵ�����
-	private double upDay;//��������
-	private double downDay;//��������
-	private double hotness;//�ȶ�
-	private int viewCount;//�ܵķ�����
-	private ArrayList<Scenery> sceneryList;//������б�
-	private ArrayList<Hotel> hotelList;//�Ƶ���б�
-	private double sumPrice;//�Ƶ����Ʊ�۸�ĺ�
-	private double sceneTicket;//��Ʊ���
-	private double hotelPrice;//�Ƶ�۸�
-	private double distance;//·�ߵ��ܳ���
+	private double visitDay;
+	private double maxDay;
+	private double minDay;
+	private double hotness;
+	private int viewCount;
+	private ArrayList<Scenery> sceneryList;
+	private ArrayList<Hotel> hotelList;
+	private double sumPrice;
+	private double sceneTicket;
+	private double hotelPrice;
+	private double distance;
 	
 	public Route(){
 		sceneryList = new ArrayList<Scenery>();
@@ -75,20 +75,20 @@ public class Route implements Comparable<Route>{
 		this.visitDay = visitDay;
 	}
 
-	public double getUpDay() {
-		return upDay;
+	public double getMaxDay() {
+		return maxDay;
 	}
 
-	public void setUpDay(double upDay) {
-		this.upDay = upDay;
+	public void setMaxDay(double maxDay) {
+		this.maxDay = maxDay;
 	}
 
-	public double getDownDay() {
-		return downDay;
+	public double getMinDay() {
+		return minDay;
 	}
 
-	public void setDownDay(double downDay) {
-		this.downDay = downDay;
+	public void setMinDay(double minDay) {
+		this.minDay = minDay;
 	}
 
 	public double getHotness() {
@@ -170,7 +170,6 @@ public class Route implements Comparable<Route>{
 
 	@Override
 	public int compareTo(Route o) {
-		//����
 		if (this.hotness > o.getHotness()) {
 			return -1;
 		}

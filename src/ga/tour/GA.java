@@ -115,11 +115,11 @@ public class GA {
 	/**
 	 * 游玩天数的上限
 	 */
-	private double upDay = 3;
+	private double maxDay = 3;
 	/**
 	 * 游玩天数的下限
 	 */
-	private double downDay = 2.0;
+	private double minDay = 2.0;
 	
 	/**
 	 * 景点属于的城市的id
@@ -158,13 +158,12 @@ public class GA {
 	 * @param hotelMap 酒店的信息
 	 * @throws Exception 
 	 */
-	public void init(String cityId, double downDay, double upDay, HashMap<String, Hotel> hotelMap) throws Exception{
+	public void init(String cityId, ArrayList<Scenery> sceneryList, double downDay, double upDay, HashMap<String, Hotel> hotelMap) throws Exception{
 		this.cityId = cityId;
-		this.downDay = downDay;
-		this.upDay = upDay;
+		this.sceneryList = sceneryList;
+		this.minDay = downDay;
+		this.maxDay = upDay;
 		this.hotelMap = hotelMap;
-		
-//		this.sceneryList = SceneryUtil.getSceneryList(cityId);
 		
 		this.sceneryNum = this.sceneryList.size();
 		if (sceneryNum < 2) {
@@ -192,7 +191,7 @@ public class GA {
 	 * 以01001的形式编码染色体
 	 */
 	private void initGroup(){
-		GreedyAlgorithm util = new GreedyAlgorithm(downDay, upDay, scale, sceneryList);
+		GreedyAlgorithm util = new GreedyAlgorithm(minDay, maxDay, scale, sceneryList);
 		oldPopulation = util.getInitPopulation();
 	}
 	
@@ -222,7 +221,7 @@ public class GA {
 			}
 		}
 		
-		if (days <= downDay || days > upDay) {
+		if (days <= minDay || days > maxDay) {
 			recommendHotel[index] = "";
 			return 0.00000000000001;
 		}
@@ -234,20 +233,20 @@ public class GA {
 		 * 如果小于则计算所有酒店的价格，剩余天数就按照最低价格计算
 		 */
 		String hotelIds = "";//保存推荐的hotelId
-		int len = Math.min(hotels.size(), (int)downDay);
+		int len = Math.min(hotels.size(), (int)minDay);
 		if (len != 0) {
 			for (int i = 0; i < len; i++) {
 				hotelPrice += hotels.get(i).getPrice();
 				hotelIds += hotels.get(i).getSid() + ",";
 			}
-			int span = (int)(downDay - hotels.size());
+			int span = (int)(minDay - hotels.size());
 			for (int i = 0; i < span; i++) {
 				hotelPrice += hotels.get(0).getPrice();
 				hotelIds += hotels.get(0).getSid() + ",";
 			}
 		}else{
 			//当该景点没有酒店的时候，默认80块
-			for (int i = 0; i < (int)downDay; i++) {
+			for (int i = 0; i < (int)minDay; i++) {
 				hotelPrice += 80.0;
 			}
 		}
@@ -274,10 +273,9 @@ public class GA {
 			sumFitness += fitness[i];
 		}
 		
-		//计算累计概率
-		this.pi[0] = fitness[0] / sumFitness;
-		for (int i = 1; i < scale; i++) {
-			pi[i] = (fitness[i] / sumFitness) + pi[i - 1]; 
+		//计算概率
+		for (int i = 0; i < scale; i++) {
+			this.pi[i] = fitness[i] / sumFitness ; 
 		}
 	}
 	
@@ -324,59 +322,28 @@ public class GA {
 	}
 	
 	/**
-	 * 赌轮选择策略挑选
+	 * 选择算子，赌轮选择策略挑选scale-1个下一代个体
 	 */
 	private void select(){
 		int selectId = 0;
 		double tmpRan;
-//		System.out.print("selectId:");
+		double tmpSum;
 		for (int i = 1; i < scale; i++) {
 			tmpRan = (double)((getRandomNum() % 1000) / 1000.0);
+			tmpSum = 0.0;
 			for (int j = 0; j < scale; j++) {
 				selectId = j;
-				if (tmpRan <= pi[j]) {
+				tmpSum += this.pi[j];
+				if (tmpSum > tmpRan) {
 					break;
 				}
 			}
-//			System.out.print(selectId+" ");
 			copyGh(i, selectId);
 		}
 	}
 	
 	/**
-	 * 进化函数，正常交叉变异
-	 */
-	public void evolution(){
-		// 挑选某代种群中适应度最高的个体
-		selectBestGh();
-		// 赌轮选择策略挑选scale-1个下一代个体
-		select();
-		
-		double ran;
-		for (int i = 0; i < scale; i = i+2) {
-			ran = random.nextDouble();
-			if (ran < this.pc) {
-				//如果小于pc，则进行交叉
-				crossover(i, i+1);
-			}else{
-				//否者，进行变异
-				ran = random.nextDouble();
-				if (ran < this.pm) {
-					//变异染色体i
-					onVariation(i);
-				}
-				
-				ran = random.nextDouble();
-				if (ran < this.pm) {
-					//变异染色体i+1
-					onVariation(i + 1);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * 两点交叉,相同染色体交叉产生不同子代染色体
+	 * 交叉算子，两点交叉,相同染色体交叉产生不同子代染色体
 	 * @param k1 染色体编号 1|234|56
 	 * @param k2 染色体编号 7|890|34
 	 */
@@ -405,15 +372,46 @@ public class GA {
 	}
 	
 	/**
-	 * 多次对换变异算子
-	 * 如：123456变成153426，基因2和5对换了
+	 * 变异算子
 	 * @param k 染色体标号
 	 */
-	private void onVariation(int k){
+	private void mutation(int k){
 		//对换变异次数
 		int index;
 		index = getRandomNum() % sceneryNum;
 		newPopulation[k][index] = getRandomNum() % 2;
+	}
+	
+	/**
+	 * 进化函数，正常交叉变异
+	 */
+	private void evolution(){
+		// 挑选某代种群中适应度最高的个体
+		selectBestGh();
+		// 赌轮选择策略挑选scale-1个下一代个体
+		select();
+		
+		double ran;
+		for (int i = 0; i < scale; i = i+2) {
+			ran = random.nextDouble();
+			if (ran < this.pc) {
+				//如果小于pc，则进行交叉
+				crossover(i, i+1);
+			}else{
+				//否者，进行变异
+				ran = random.nextDouble();
+				if (ran < this.pm) {
+					//变异染色体i
+					mutation(i);
+				}
+				
+				ran = random.nextDouble();
+				if (ran < this.pm) {
+					//变异染色体i+1
+					mutation(i + 1);
+				}
+			}
+		}
 	}
 	
 	double lastFitness = 0.0;
@@ -496,7 +494,7 @@ public class GA {
 				}
 			}
 			
-			String uid = AppUtil.md5(tmpR + this.upDay);
+			String uid = AppUtil.md5(tmpR + this.maxDay);
 			String sid = "da666bc57594baeb76b3bcf0";
 			String ambiguitySname = "广州";
 			String sname = "广州";
@@ -508,8 +506,8 @@ public class GA {
 			route.setAmbiguitySname(ambiguitySname);
 			route.setSname(sname);
 			route.setSurl(surl);
-			route.setUpDay(upDay);
-			route.setDownDay(downDay);
+			route.setMaxDay(maxDay);
+			route.setMinDay(minDay);
 			route.setVisitDay(days);
 			route.setHotness(hotness);
 			route.setViewCount(viewCount);
@@ -582,24 +580,6 @@ public class GA {
 		return routeList;
 	}
 	
-	
-	public static void main(String[] args) throws Exception{
-		long begin = System.currentTimeMillis();
-//		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
-//		
-//		GaScenery ga = new GaScenery(300, 1000, 0.8, 0.9);
-//		ga.init("da666bc57594baeb76b3bcf0",2.0, 3.0, hotelMap);
-//		ga.init("622bc401f1153f0fd41f74dd",2.0, 3.0, hotelMap);
-//		ga.init("1c41ec5be32fd14cfbe36df6",2.0, 3.0, hotelMap);
-		
-//		ArrayList<Route> routeList = ga.solve();
-		
-//		System.out.println("总共：" + routeList.size() +"条路径");
-//		long end = System.currentTimeMillis();
-//		long time = (end - begin);
-//		System.out.println();
-//		System.out.println("耗时："+ time +" ms");
-	}
 	
 	
 	

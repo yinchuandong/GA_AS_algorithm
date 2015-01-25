@@ -3,7 +3,6 @@ package model;
 import java.util.Comparator;
 
 /**
- * �Ƶ��ʵ��ģ��
  * @author yinchuandong
  *
  */
