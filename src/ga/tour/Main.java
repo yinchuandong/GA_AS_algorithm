@@ -16,14 +16,16 @@ public class Main {
 	public static void main(String[] args) throws Exception{
 		
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
+		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
 		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
 		
-		Collections.sort(sceneryList);
-		Collections.reverse(sceneryList);
+		//sort all the scenery according to viewCount
+//		Collections.sort(sceneryList);
+//		Collections.reverse(sceneryList);
 		
 		long begin = System.currentTimeMillis();
 		GA ga = new GA(300, 1000, 0.8, 0.9);
-		ga.init("da666bc57594baeb76b3bcf0", sceneryList, 2.0, 3.0, hotelMap);
+		ga.init(city, sceneryList, 2.0, 3.0, hotelMap);
 //		ga.init("622bc401f1153f0fd41f74dd", sceneryList, 2.0, 3.0, hotelMap);
 //		ga.init("1c41ec5be32fd14cfbe36df6", sceneryList, 2.0, 3.0, hotelMap);
 		

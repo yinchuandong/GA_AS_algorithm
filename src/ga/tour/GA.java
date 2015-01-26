@@ -122,9 +122,14 @@ public class GA {
 	private double minDay = 2.0;
 	
 	/**
-	 * 景点属于的城市的id
+	 * 景点属于的城市的对象
 	 */
-	private String cityId;
+	private Scenery city;
+	
+	/**
+	 * greedy algorithm util
+	 */
+	private GreedyAlgorithm greedyAgm;
 	
 	/**
 	 * 
@@ -158,8 +163,8 @@ public class GA {
 	 * @param hotelMap 酒店的信息
 	 * @throws Exception 
 	 */
-	public void init(String cityId, ArrayList<Scenery> sceneryList, double downDay, double upDay, HashMap<String, Hotel> hotelMap) throws Exception{
-		this.cityId = cityId;
+	public void init(Scenery city, ArrayList<Scenery> sceneryList, double downDay, double upDay, HashMap<String, Hotel> hotelMap) throws Exception{
+		this.city = city;
 		this.sceneryList = sceneryList;
 		this.minDay = downDay;
 		this.maxDay = upDay;
@@ -167,7 +172,7 @@ public class GA {
 		
 		this.sceneryNum = this.sceneryList.size();
 		if (sceneryNum < 2) {
-			throw new Exception("景点的个数为" + sceneryNum +"，不符合，其id为：" + cityId);
+			throw new Exception("景点的个数为" + sceneryNum +"，不符合，其url为：" + city.getSurl());
 		}
 		
 		this.bestLen = Integer.MIN_VALUE;
@@ -187,12 +192,12 @@ public class GA {
 	}
 	
 	/**
-	 * 初始化种群
-	 * 以01001的形式编码染色体
+	 * initialize the population by greedy algorithm <br/>
+	 * encode the chromosome in the pattern like 01001
 	 */
 	private void initGroup(){
-		GreedyAlgorithm util = new GreedyAlgorithm(minDay, maxDay, scale, sceneryList);
-		oldPopulation = util.getInitPopulation();
+		this.greedyAgm = new GreedyAlgorithm(minDay, maxDay, scale, sceneryList);
+		oldPopulation = greedyAgm.getInitPopulation();
 	}
 	
 	/**
@@ -257,8 +262,13 @@ public class GA {
 		recommendHotel[index] = hotelIds;
 		
 		double price = hotelPrice + ticketPrice;
-		double fitness = (10000.0 / (price + 10.0)) * 0.1 + Math.pow(hotness, 1.0/3.0) * 0.9;
-//		System.out.println("fiteness:" + fitness);
+//		double fitness = (10000.0 / (price + 10.0)) * 0.1 + Math.pow(hotness, 1.0/3.0) * 0.9;
+		double fitness = hotness;
+//		double rho = 0.8;
+//		double fx = (1.0 - rho) * Math.pow(1.0 / (10.0 + price), 1.0);
+//		double gx = rho * Math.pow(1.0 / (10000001 - hotness), 1.0 / 4.0)*10;
+//		fitness = fx + gx;
+//		System.out.println("fiteness: price=" + fx + "  hotness=" + gx );
 		return fitness;
 	}
 	
@@ -283,31 +293,42 @@ public class GA {
 	 *  挑选某代种群中适应度最高的个体，直接复制到子代中，
 	 *  前提是已经计算出各个个体的适应度Fitness[max]
 	 */
-	private void selectBestGh(){
+	private void selectBestAndWorst(){
 		int maxId = 0;
-		double maxEvaluation = fitness[0];
-		//记录适度最大的cityId和适度
+		double maxFitness = fitness[0];
+		
+		int minId = 0;
+		double minFitness = fitness[0];
+		
+		//save the best and worst city's id and fitness
 		for (int i = 1; i < scale; i++) {
-			if (maxEvaluation < fitness[i]) {
-				maxEvaluation = fitness[i];
+			//save the best chromosome
+			if (maxFitness < fitness[i]) {
+				maxFitness = fitness[i];
 				maxId = i;
+			}
+			
+			//save the worst chromosome
+			if (minFitness > fitness[i]){
+				minFitness = fitness[i];
+				minId = i;
 			}
 		}
 		
-		//记录最好的染色体出现代数
-		if (bestLen < maxEvaluation) {
-			bestLen = maxEvaluation;
+		//save the globally best chromosome
+		if (bestLen < maxFitness) {
+			bestLen = maxFitness;
 			bestGen = curGen;
 			for (int i = 0; i < sceneryNum; i++) {
 				bestRoute[i] = oldPopulation[maxId][i];
 			}
 		}
-		
-		//记录最好景点对应的酒店
+		//save the best hotel
 		bestHotelIds = recommendHotel[maxId];
+		// copy the best chromosome into new population and put on the first of population
+		this.copyChromosome(0, maxId);
 		
-		// 将当代种群中适应度最高的染色体maxId复制到新种群中，排在第一位0
-		this.copyGh(0, maxId);
+		this.greedyAgm.optimize(oldPopulation[minId]);
 	}
 	
 	/**
@@ -315,7 +336,7 @@ public class GA {
 	 * @param curP 新染色体在种群中的位置
 	 * @param oldP 旧的染色体在种群中的位置
 	 */
-	private void copyGh(int curP, int oldP){
+	private void copyChromosome(int curP, int oldP){
 		for (int i = 0; i < sceneryNum; i++) {
 			newPopulation[curP][i] = oldPopulation[oldP][i];
 		}
@@ -338,7 +359,7 @@ public class GA {
 					break;
 				}
 			}
-			copyGh(i, selectId);
+			copyChromosome(i, selectId);
 		}
 	}
 	
@@ -387,7 +408,7 @@ public class GA {
 	 */
 	private void evolution(){
 		// 挑选某代种群中适应度最高的个体
-		selectBestGh();
+		selectBestAndWorst();
 		// 赌轮选择策略挑选scale-1个下一代个体
 		select();
 		
@@ -433,7 +454,19 @@ public class GA {
 		
 		//开始进化
 		for (curGen = 0; curGen < maxGen; curGen++) {
+			//do select, crossover and mutation operator
 			evolution();
+			
+			//计算当前代的适度
+			double curFitness = 0.0;
+			for (int i = 0; i < scale; i++) {
+				fitness[i] = this.evaluate(i, newPopulation[i]);
+				curFitness += fitness[i];
+			}
+			
+			//calculate the probability of each chromosome in population
+			countRate();
+			
 			// 将新种群newGroup复制到旧种群oldGroup中，准备下一代进化
 			for (int i = 0; i < scale; i++) {
 				for (int j = 0; j < sceneryNum; j++) {
@@ -441,23 +474,24 @@ public class GA {
 				}
 			}
 			
-			//计算当前代的适度
-			double curFitness = 0.0;
-			for (int i = 0; i < scale; i++) {
-				fitness[i] = this.evaluate(i, oldPopulation[i]);
-				curFitness += fitness[i];
-			}
-			
-			// 计算当前种群中各个个体的累积概率，pi[max]
-			countRate();
-			if(this.lastFitness > curFitness){
-				System.out.println("curGen of curfintess: " + this.curGen + "-" + this.maxGen);
-			}
+//			if(this.lastFitness > curFitness){
+//				System.out.println("curGen of curfintess: " + this.curGen + "-" + this.maxGen);
+//			}
 			this.lastFitness = curFitness;
 		}
 		
-		selectBestGh();
+		selectBestAndWorst();
 		
+		
+		ArrayList<Route> routeList = decodeChromosome();
+		return routeList;
+	}
+	
+	/**
+	 * decode the chromosome and transform into route model 
+	 * @return
+	 */
+	private ArrayList<Route> decodeChromosome(){
 		System.out.println("gasecnery 最后种群");
 		HashMap<String, Route> routeMap = new HashMap<String, Route>();
 		//获得城市对象
@@ -495,10 +529,10 @@ public class GA {
 			}
 			
 			String uid = AppUtil.md5(tmpR + this.maxDay);
-			String sid = "da666bc57594baeb76b3bcf0";
-			String ambiguitySname = "广州";
-			String sname = "广州";
-			String surl = "guangzhou";
+			String sid = city.getSid();
+			String ambiguitySname = city.getAmbiguitySname();
+			String sname = city.getSname();
+			String surl = city.getSurl();
 			double sumPrice = hotelPrice + sceneTicket;
 			
 			route.setUid(uid);
@@ -567,13 +601,20 @@ public class GA {
 			for (String sid : hotelArr) {
 				Hotel hotel = hotelMap.get(sid);
 				price += hotel.getPrice();
-				System.out.println("酒店：" + sid + "-" + hotel.getPrice() + "元");
+				System.out.println("酒店：" + hotel.getHotelName() + "-" + hotel.getPrice() + "元");
 			}
+		}
+		
+		for (Route route : routeList) {
+			ArrayList<Scenery> sceneList = route.getSceneryList();
+			for (Scenery scenery : sceneList) {
+				System.out.print(scenery.getSname() + ",");
+			}
+			System.out.println();
 		}
 //		System.out.print("  天数：" + days + " --价格：" + price + " --热度:" + hotness);
 //		System.out.print(" 酒店:" + bestHotelIds);
 //		System.out.println();
-		
 		return routeList;
 	}
 	
