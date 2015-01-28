@@ -24,8 +24,8 @@ public class Main {
 //		Collections.reverse(sceneryList);
 		
 		long begin = System.currentTimeMillis();
-		GA ga = new GA(300, 1000, 0.8, 0.9);
-		ga.init(city, sceneryList, 2.0, 3.0, hotelMap);
+		GA ga = new GA(300, 1000, 0.9, 0.9);
+		ga.init(city, sceneryList, hotelMap, 2.0, 3.0);
 //		ga.init("622bc401f1153f0fd41f74dd", sceneryList, 2.0, 3.0, hotelMap);
 //		ga.init("1c41ec5be32fd14cfbe36df6", sceneryList, 2.0, 3.0, hotelMap);
 		

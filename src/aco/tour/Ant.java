@@ -1,22 +1,37 @@
 package aco.tour;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
-class Ant {
+import model.Hotel;
+import model.Scenery;
+
+public class Ant {
+	/**
+	 * 城市对象
+	 */
+	Scenery city;
+	/**
+	 * 酒店的map
+	 */
+	HashMap<String, Hotel> hotelMap;
 	/**
 	 * 景点对象列表
 	 */
-	ArrayList<Scene> sceneList;
+	ArrayList<Scenery> sceneryList;
 	/**
 	 * 蚂蚁的路径
 	 */
 	private int[] tour;
 
+	private double Q;
+
 	/**
 	 * 存储是否访问过某一城市，1代表访问过
 	 */
-	private int[] city;
+	private int[] tabu;
 
 	/**
 	 * 城市被访问的概率
@@ -31,17 +46,18 @@ class Ant {
 	/**
 	 * 蚂蚁当前走过的距离
 	 */
-	private int length;
+	private double length;
 
 	/**
 	 * 游玩的天数上边界 默认为3
 	 */
 	double maxDay;
+	double minDay;
 
 	/**
 	 * 记录当前路线的天数总和
 	 */
-	double visitedDays;
+	double curVisitDay;
 
 	/**
 	 * 城市个数
@@ -71,7 +87,7 @@ class Ant {
 	 * 
 	 * @return
 	 */
-	public int getLength() {
+	public double getLength() {
 		return length;
 	}
 
@@ -87,24 +103,29 @@ class Ant {
 	 * @param maxDay
 	 *            天数的上限
 	 */
-	public void init(ArrayList<Scene> sceneList, double maxDay) {
-		this.sceneList = sceneList;
+	public void init(Scenery city, ArrayList<Scenery> sceneList,
+			HashMap<String, Hotel> hotelMap, double Q, double minDay, double maxDay) {
+		this.city = city;
+		this.sceneryList = sceneList;
+		this.hotelMap = hotelMap;
 		this.count = sceneList.size();
+		this.Q = Q;
+		this.minDay = minDay;
 		this.maxDay = maxDay;
 		this.pSum = 0.0;
 		this.p = new double[count];
-		this.city = new int[count];
+		this.tabu = new int[count];
 		this.tour = new int[count];
 		for (int i = 0; i < count; i++) {
-			city[i] = 0;
+			tabu[i] = 0;
 			tour[i] = -1;
 			p[i] = 0.0;
 		}
 		int random = new Random(System.currentTimeMillis()).nextInt(count);
 		p[random] = 0.0;
-		city[random] = 1;
+		tabu[random] = 1;
 		tour[0] = random;
-		visitedDays = sceneList.get(random).getVisitDays();
+		curVisitDay = sceneList.get(random).getVisitDay();
 	}
 
 	/**
@@ -120,14 +141,14 @@ class Ant {
 		double sum = 0.0;// 信息素概率总和
 		// 公式中得分母部分
 		for (int i = 0; i < count; i++) {
-			if (city[i] == 0) {
+			if (tabu[i] == 0) {
 				sum += Math.pow(pheromone[i], this.alpha)
 						* (Math.pow(hotness[i], this.beta));
 			}
 		}
 		// 公式中的分子部分
 		for (int i = 0; i < count; i++) {
-			if (city[i] == 1) {
+			if (tabu[i] == 1) {
 				p[i] = 0.0;
 			} else {
 				p[i] = Math.pow(pheromone[i], this.alpha)
@@ -146,14 +167,14 @@ class Ant {
 	 */
 	public boolean selectNextCity(int index) {
 		int select = getRandomCity(p);
-		double day = this.sceneList.get(select).getVisitDays();
+		double day = this.sceneryList.get(select).getVisitDay();
 		// 检查当前路线的游玩时间是否合法
-		if (this.visitedDays + day > maxDay) {
+		if (this.curVisitDay + day > maxDay) {
 			return false;
 		}
-		this.visitedDays += day;
+		this.curVisitDay += day;
 		tour[index] = select;
-		city[select] = 1;
+		tabu[select] = 1;
 		pSum -= p[select];
 		p[select] = 0.0; // 选择过的城市概率设为0，以后就不会被选择到
 		return true;
@@ -182,13 +203,65 @@ class Ant {
 	 * 
 	 * @param distance
 	 */
-	public void calcTourLength(ArrayList<Scene> sceneList) {
+	public void calcTourLength(ArrayList<Scenery> sceneList) {
 		length = 0;
+		double ticketPrice = 0.0;
+		double viewCount = 0.0;
+		double days = 0.0;
 		for (int i = 0; i < count; i++) {
-			if (tour[i] == -1) {
+			int tourId = tour[i];
+			if (tourId == -1) {
 				break;
 			}
-			length += sceneList.get(tour[i]).getViewCount();
+			Scenery scene = sceneList.get(tourId);
+			viewCount += scene.getViewCount();
+			ticketPrice += scene.getPrice();
+			days += scene.getVisitDay();
 		}
+		// 酒店当前染色体对应的酒店信息
+		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
+
+		if (days <= minDay || days > maxDay) {
+			return;
+		}
+
+		Collections.sort(curHotels);
+		double hotelPrice = 0.0;
+		/*
+		 * 判断酒店的个数是否大于需要入住的天数 如果大于则按照入住的天数计算价格 如果小于则计算所有酒店的价格，剩余天数就按照最低价格计算
+		 */
+		String hotelIds = "";// 保存推荐的hotelId
+		int len = Math.min(curHotels.size(), (int) minDay);
+		if (len != 0) {
+			for (int i = 0; i < len; i++) {
+				hotelPrice += curHotels.get(i).getPrice();
+				hotelIds += curHotels.get(i).getSid() + ",";
+			}
+			int span = (int) (minDay - curHotels.size());
+			for (int i = 0; i < span; i++) {
+				hotelPrice += curHotels.get(0).getPrice();
+				hotelIds += curHotels.get(0).getSid() + ",";
+			}
+		} else {
+			// 当该景点没有酒店的时候，默认80块
+			for (int i = 0; i < (int) minDay; i++) {
+				hotelPrice += 80.0;
+			}
+		}
+
+		if (!hotelIds.equals("")) {
+			hotelIds = hotelIds.substring(0, hotelIds.length() - 1);
+		}
+
+		double price = hotelPrice + ticketPrice;
+		double rho = 0.9;
+//		double fx = (1.0 - rho) * Math.pow(1.0 / (10.0 + price), 1.0);
+//		double gx = rho * Math.pow(1.0 / (10.0 + this.Q - viewCount), 1.0 / 3.0);
+		double fx = (1 - rho)*(10000.0 / (price + 10.0));
+		double gx =  rho * Math.pow(viewCount, 1.0/3.0);
+		this.length = fx + gx;
+//		this.length = viewCount;
+
 	}
+
 }

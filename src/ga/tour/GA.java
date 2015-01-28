@@ -66,6 +66,11 @@ public class GA {
 	private double[] pi;
 	
 	/**
+	 * 景点的最大热度
+	 */
+	private int maxViewCount;
+	
+	/**
 	 *  初始种群，父代种群，行数表示种群规模，一行代表一个个体，即染色体，列表示染色体基因片段
 	 */
 	private int[][] oldPopulation;
@@ -158,22 +163,33 @@ public class GA {
 	/**
 	 * 初始化算法，从file中加载数据文件
 	 * @param cityId 城市的sid
-	 * @param downDay 天数下限，开区间
-	 * @param upDay 天数上限，闭区间
+	 * @param minDay 天数下限，开区间
+	 * @param maxDay 天数上限，闭区间
 	 * @param hotelMap 酒店的信息
 	 * @throws Exception 
 	 */
-	public void init(Scenery city, ArrayList<Scenery> sceneryList, double downDay, double upDay, HashMap<String, Hotel> hotelMap) throws Exception{
+	public void init(Scenery city, ArrayList<Scenery> sceneryList, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) throws Exception{
 		this.city = city;
 		this.sceneryList = sceneryList;
-		this.minDay = downDay;
-		this.maxDay = upDay;
+		this.minDay = minDay;
+		this.maxDay = maxDay;
 		this.hotelMap = hotelMap;
 		
 		this.sceneryNum = this.sceneryList.size();
 		if (sceneryNum < 2) {
 			throw new Exception("景点的个数为" + sceneryNum +"，不符合，其url为：" + city.getSurl());
 		}
+		
+		//select the max viewCount of all scenery
+		this.maxViewCount = sceneryList.get(0).getViewCount();
+		for (int i = 0; i < sceneryNum; i++) {
+			int tmpCount = sceneryList.get(i).getViewCount();
+			if(this.maxViewCount < tmpCount){
+				this.maxViewCount = tmpCount;
+			}
+		}
+		// maxViewCount multiply the max scenery number in a route
+		this.maxViewCount *= 20;
 		
 		this.bestLen = Integer.MIN_VALUE;
 		this.bestGen = 0;
@@ -211,7 +227,7 @@ public class GA {
 		double hotness = 0.0;//热度
 		double days = 0.0;
 		//酒店当前染色体对应的酒店信息
-		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
+		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
 		for (int i = 0; i < chromosome.length; i++) {
 			if (chromosome[i] == 1) {
 				Scenery scene = sceneryList.get(i);
@@ -221,7 +237,7 @@ public class GA {
 				//获得该景点的酒店信息
 				Hotel hotel = hotelMap.get(scene.getSid());
 				if (hotel != null) {
-					hotels.add(hotel);
+					curHotels.add(hotel);
 				}
 			}
 		}
@@ -231,23 +247,23 @@ public class GA {
 			return 0.00000000000001;
 		}
 		
-		Collections.sort(hotels);
+		Collections.sort(curHotels);
 		double hotelPrice = 0.0;
 		/* 判断酒店的个数是否大于需要入住的天数
 		 * 如果大于则按照入住的天数计算价格
 		 * 如果小于则计算所有酒店的价格，剩余天数就按照最低价格计算
 		 */
 		String hotelIds = "";//保存推荐的hotelId
-		int len = Math.min(hotels.size(), (int)minDay);
+		int len = Math.min(curHotels.size(), (int)minDay);
 		if (len != 0) {
 			for (int i = 0; i < len; i++) {
-				hotelPrice += hotels.get(i).getPrice();
-				hotelIds += hotels.get(i).getSid() + ",";
+				hotelPrice += curHotels.get(i).getPrice();
+				hotelIds += curHotels.get(i).getSid() + ",";
 			}
-			int span = (int)(minDay - hotels.size());
+			int span = (int)(minDay - curHotels.size());
 			for (int i = 0; i < span; i++) {
-				hotelPrice += hotels.get(0).getPrice();
-				hotelIds += hotels.get(0).getSid() + ",";
+				hotelPrice += curHotels.get(0).getPrice();
+				hotelIds += curHotels.get(0).getSid() + ",";
 			}
 		}else{
 			//当该景点没有酒店的时候，默认80块
@@ -262,12 +278,14 @@ public class GA {
 		recommendHotel[index] = hotelIds;
 		
 		double price = hotelPrice + ticketPrice;
-//		double fitness = (10000.0 / (price + 10.0)) * 0.1 + Math.pow(hotness, 1.0/3.0) * 0.9;
-		double fitness = hotness;
-//		double rho = 0.8;
+		double fitness =  0.0;
+		double rho = 0.9;
 //		double fx = (1.0 - rho) * Math.pow(1.0 / (10.0 + price), 1.0);
-//		double gx = rho * Math.pow(1.0 / (10000001 - hotness), 1.0 / 4.0)*10;
-//		fitness = fx + gx;
+//		double gx = rho * Math.pow(1.0 / (10.0 + this.maxViewCount - hotness), 1.0 / 3.0);
+		
+		double fx = (1 - rho)*(10000.0 / (price + 10.0));
+		double gx =  rho * Math.pow(hotness, 1.0/3.0);
+		fitness = fx + gx;
 //		System.out.println("fiteness: price=" + fx + "  hotness=" + gx );
 		return fitness;
 	}
@@ -435,8 +453,6 @@ public class GA {
 		}
 	}
 	
-	double lastFitness = 0.0;
-	
 	/**
 	 * 解决问题
 	 */
@@ -458,10 +474,8 @@ public class GA {
 			evolution();
 			
 			//计算当前代的适度
-			double curFitness = 0.0;
 			for (int i = 0; i < scale; i++) {
 				fitness[i] = this.evaluate(i, newPopulation[i]);
-				curFitness += fitness[i];
 			}
 			
 			//calculate the probability of each chromosome in population
@@ -473,15 +487,10 @@ public class GA {
 					oldPopulation[i][j] = newPopulation[i][j];
 				}
 			}
-			
-//			if(this.lastFitness > curFitness){
-//				System.out.println("curGen of curfintess: " + this.curGen + "-" + this.maxGen);
-//			}
-			this.lastFitness = curFitness;
 		}
 		
+		//select the best and worst generation
 		selectBestAndWorst();
-		
 		
 		ArrayList<Route> routeList = decodeChromosome();
 		return routeList;
@@ -496,7 +505,7 @@ public class GA {
 		HashMap<String, Route> routeMap = new HashMap<String, Route>();
 		//获得城市对象
 		for (int i = 0; i < scale; i++) {
-			double sceneTicket = 0.0;
+			double ticketPrice = 0.0;
 			double hotelPrice = 0.0;
 			double hotness = fitness[i];
 			double days = 0.0;
@@ -508,7 +517,7 @@ public class GA {
 			for (int j = 0; j < sceneryNum; j++) {
 				if (oldPopulation[i][j] == 1) {
 					Scenery scene = sceneryList.get(j);
-					sceneTicket += scene.getPrice();
+					ticketPrice += scene.getPrice();
 					viewCount += scene.getViewCount();
 					days += scene.getVisitDay();
 					tmpR += scene.getSid();
@@ -533,7 +542,7 @@ public class GA {
 			String ambiguitySname = city.getAmbiguitySname();
 			String sname = city.getSname();
 			String surl = city.getSurl();
-			double sumPrice = hotelPrice + sceneTicket;
+			double sumPrice = hotelPrice + ticketPrice;
 			
 			route.setUid(uid);
 			route.setSid(sid);
@@ -546,7 +555,7 @@ public class GA {
 			route.setHotness(hotness);
 			route.setViewCount(viewCount);
 			route.setHotelPrice(hotelPrice);
-			route.setSceneTicket(sceneTicket);
+			route.setSceneTicket(ticketPrice);
 			route.setSumPrice(sumPrice);
 			route.setSceneryList(sList);
 			route.setHotelList(hotelList);
@@ -605,13 +614,13 @@ public class GA {
 			}
 		}
 		
-		for (Route route : routeList) {
-			ArrayList<Scenery> sceneList = route.getSceneryList();
-			for (Scenery scenery : sceneList) {
-				System.out.print(scenery.getSname() + ",");
-			}
-			System.out.println();
-		}
+//		for (Route route : routeList) {
+//			ArrayList<Scenery> sceneList = route.getSceneryList();
+//			for (Scenery scenery : sceneList) {
+//				System.out.print(scenery.getSname() + ",");
+//			}
+//			System.out.println();
+//		}
 //		System.out.print("  天数：" + days + " --价格：" + price + " --热度:" + hotness);
 //		System.out.print(" 酒店:" + bestHotelIds);
 //		System.out.println();
