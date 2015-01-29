@@ -227,7 +227,7 @@ public class SceneryUtil {
 						scenery.setSurl(surl);
 						scenery.setSname(sname);
 						scenery.setAmbiguitySname(ambiguitySname);
-						scenery.setMoreDesc(moreDesc);
+//						scenery.setMoreDesc(moreDesc);
 						scenery.setFullUrl(fullUrl);
 						scenery.setViewCount(viewCount);
 						scenery.setLng(lng);

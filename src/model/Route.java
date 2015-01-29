@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Route implements Comparable<Route>{
+public class Route{
 	
 	private String uid;
 	private String sid;
@@ -168,16 +168,6 @@ public class Route implements Comparable<Route>{
 	}
 
 
-	@Override
-	public int compareTo(Route o) {
-		if (this.hotness > o.getHotness()) {
-			return -1;
-		}
-		if (this.hotness == o.getHotness()) {
-			return 0;
-		}
-		return 1;
-	}
 	
 	
 

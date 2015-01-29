@@ -3,11 +3,13 @@ package ga.tour;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import model.Hotel;
 import model.Route;
 import model.Scenery;
 import util.HotelUtil;
+import util.RouteUtil;
 import util.SceneryUtil;
 
 public class Main {
@@ -26,12 +28,14 @@ public class Main {
 		long begin = System.currentTimeMillis();
 		GA ga = new GA(300, 1000, 0.9, 0.9);
 		ga.init(city, sceneryList, hotelMap, 2.0, 3.0);
-//		ga.init("622bc401f1153f0fd41f74dd", sceneryList, 2.0, 3.0, hotelMap);
-//		ga.init("1c41ec5be32fd14cfbe36df6", sceneryList, 2.0, 3.0, hotelMap);
 		
-		ArrayList<Route> routeList = ga.solve();
+		ArrayList<Route> routeList = ga.run();
 		
-//		System.out.println("总共：" + routeList.size() +"条路径");
+		System.out.println("-----split-------");
+		List<Route> top30List = routeList.subList(0, 20);
+		System.out.println("avg=" + RouteUtil.caclAvgHotness(top30List));
+		
+		System.out.println("总共：" + routeList.size() +"条路径");
 		long end = System.currentTimeMillis();
 		long time = (end - begin);
 		System.out.println();

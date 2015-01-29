@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -456,7 +457,7 @@ public class GA {
 	/**
 	 * 解决问题
 	 */
-	public ArrayList<Route> solve(){
+	public ArrayList<Route> run(){
 		//初始化种群
 		initGroup();
 		//计算初始适度
@@ -502,11 +503,11 @@ public class GA {
 	 */
 	private ArrayList<Route> decodeChromosome(){
 		System.out.println("gasecnery 最后种群");
-		HashMap<String, Route> routeMap = new HashMap<String, Route>();
+		HashMap<String, Integer> routeMap = new HashMap<String, Integer>();
+		ArrayList<Route> routeList = new ArrayList<Route>();
 		//获得城市对象
 		for (int i = 0; i < scale; i++) {
 			double ticketPrice = 0.0;
-			double hotelPrice = 0.0;
 			double hotness = fitness[i];
 			double days = 0.0;
 			int viewCount = 0;
@@ -525,24 +526,12 @@ public class GA {
 //					System.out.print(scene.getSname() + ",");
 				}
 			}
-			//获得推荐的酒店列表
-			ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
-			String hotelStr = recommendHotel[i];
-			if (hotelStr != null && !hotelStr.equals("")) {
-				String[] arr = hotelStr.split(",");
-				for (String hSid : arr) {
-					Hotel hotel = hotelMap.get(hSid);
-					hotelPrice += hotel.getPrice();
-					hotelList.add(hotel);
-				}
-			}
 			
 			String uid = AppUtil.md5(tmpR + this.maxDay);
 			String sid = city.getSid();
 			String ambiguitySname = city.getAmbiguitySname();
 			String sname = city.getSname();
 			String surl = city.getSurl();
-			double sumPrice = hotelPrice + ticketPrice;
 			
 			route.setUid(uid);
 			route.setSid(sid);
@@ -554,33 +543,29 @@ public class GA {
 			route.setVisitDay(days);
 			route.setHotness(hotness);
 			route.setViewCount(viewCount);
-			route.setHotelPrice(hotelPrice);
 			route.setSceneTicket(ticketPrice);
-			route.setSumPrice(sumPrice);
 			route.setSceneryList(sList);
-			route.setHotelList(hotelList);
-			if (!routeMap.containsKey(uid)) {
-				routeMap.put(uid, route);
+			if (!routeMap.containsKey(uid) && sList.size() >= 2) {
+				routeMap.put(uid, 1);
+				routeList.add(route);
 			}
 //			System.out.print("  天数：" + days + " --价格：" + sceneTicket + " --热度:" + hotness);
 //			System.out.print(" 适度：" + fitness[i] + " 酒店：" + recommendHotel[i]);
 //			System.out.println();
 		}
 		
-		ArrayList<Route> routeList = new ArrayList<Route>();
-		Iterator<String> iter = routeMap.keySet().iterator();
-		while(iter.hasNext()){
-			String key = iter.next();
-			Route route = routeMap.get(key);
-			//至少两个景点才能算一个路径
-			if(route.getSceneryList().size() >= 2){
-				routeList.add(route);
+		//sort the routeList
+		Collections.sort(routeList, new Comparator<Route>() {
+
+			@Override
+			public int compare(Route o1, Route o2) {
+				if(o1.getHotness() < o2.getHotness()){
+					return 1;
+				}else{
+					return -1;
+				}
 			}
-//			System.out.println(route.getSname() + "--" + route.getHotness());
-		}
-		
-		Collections.sort(routeList);
-		
+		});
 		
 		//------------------------------------
 		System.out.println("最佳长度出现代数：" + bestGen);
@@ -603,27 +588,21 @@ public class GA {
 				System.out.print(scene.getSname() + ",");
 			}
 		}
-		if (!bestHotelIds.equals("")) {
-			System.out.println();
-			System.out.println("景点花费：" + price +" 元");
-			String[] hotelArr = bestHotelIds.split(",");
-			for (String sid : hotelArr) {
-				Hotel hotel = hotelMap.get(sid);
-				price += hotel.getPrice();
-				System.out.println("酒店：" + hotel.getHotelName() + "-" + hotel.getPrice() + "元");
-			}
-		}
+		System.out.println();
+		System.out.println("景点花费：" + price +" 元");
 		
-//		for (Route route : routeList) {
+//		for (int i = 0; i < routeList.size(); i++) {
+//			Route route = routeList.get(i);
 //			ArrayList<Scenery> sceneList = route.getSceneryList();
 //			for (Scenery scenery : sceneList) {
 //				System.out.print(scenery.getSname() + ",");
 //			}
 //			System.out.println();
+//			if(i >= 20){
+//				break;
+//			}
 //		}
-//		System.out.print("  天数：" + days + " --价格：" + price + " --热度:" + hotness);
-//		System.out.print(" 酒店:" + bestHotelIds);
-//		System.out.println();
+		
 		return routeList;
 	}
 	
