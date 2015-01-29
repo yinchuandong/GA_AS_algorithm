@@ -1,4 +1,4 @@
-package aco.tour;
+package aco.tour.optimized;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,20 +151,20 @@ public class ACO {
 					bestLength = ants[i].getLength();
 					int[] tmpTour = new int[sceneList.size()];
 					
-					System.out.println("第" + gen + "代, 蚂蚁" + i + "，发现新的解为："
-							+ bestLength);
+//					System.out.println("第" + gen + "代, 蚂蚁" + i + "，发现新的解为："
+//							+ bestLength);
 					for (int j = 0; j < sceneCount; j++) {
 						bestTour[j] = ants[i].getTour()[j];
 						tmpTour[j] = bestTour[j];
 						if (bestTour[j] != -1) {
-							System.out.print(sceneList.get(bestTour[j])
-									.getSname() + " ");
+//							System.out.print(sceneList.get(bestTour[j])
+//									.getSname() + " ");
 						}
 					}
 					antTourList.add(bestTour.clone());
 					hotnessList.add(bestLength);
 					
-					System.out.println();
+//					System.out.println();
 				}
 			}
 			// 更新信息素

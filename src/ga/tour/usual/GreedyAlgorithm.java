@@ -1,4 +1,4 @@
-package ga.tour;
+package ga.tour.usual;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -161,7 +161,7 @@ public class GreedyAlgorithm {
 			}
 			k++;
 //			codeStr = codeStr.substring(0, codeStr.length() - 1) + "\r\n";
-			System.out.print(codeStr);
+//			System.out.print(codeStr);
 		}
 		
 		

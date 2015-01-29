@@ -1,4 +1,4 @@
-package aco.tourold;
+package aco.tour.usual;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package ga.tour;
+package ga.tour.usual;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -230,22 +230,28 @@ public class GA {
 		//酒店当前染色体对应的酒店信息
 		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
 		for (int i = 0; i < chromosome.length; i++) {
-			if (chromosome[i] == 1) {
-				Scenery scene = sceneryList.get(i);
-				ticketPrice +=  scene.getPrice();
-				hotness += (double)scene.getViewCount();
-				days += scene.getVisitDay();
-				//获得该景点的酒店信息
-				Hotel hotel = hotelMap.get(scene.getSid());
-				if (hotel != null) {
-					curHotels.add(hotel);
-				}
+			if (chromosome[i] != 1) {
+				continue;
+			}
+			Scenery scene = sceneryList.get(i);
+			if (days + scene.getVisitDay() > maxDay) {
+				//if current visitDays larger than maxDay, give up this scenery
+				chromosome[i] = 0;
+				continue;
+			}
+			ticketPrice += scene.getPrice();
+			hotness += (double) scene.getViewCount();
+			days += scene.getVisitDay();
+			// 获得该景点的酒店信息
+			Hotel hotel = hotelMap.get(scene.getSid());
+			if (hotel != null) {
+				curHotels.add(hotel);
 			}
 		}
 		
 		if (days <= minDay || days > maxDay) {
 			recommendHotel[index] = "";
-			return 0.00000000000001;
+			return 0;
 		}
 		
 		Collections.sort(curHotels);
@@ -467,7 +473,7 @@ public class GA {
 		// 计算初始化种群中各个个体的累积概率，pi[max]
 		countRate();
 		
-		System.out.println("gascenery 初始种群...");
+//		System.out.println("gascenery 初始种群...");
 		
 		//开始进化
 		for (curGen = 0; curGen < maxGen; curGen++) {
@@ -527,6 +533,11 @@ public class GA {
 				}
 			}
 			
+			//ensure the visitDays is between minDay and maxDay
+			if (days <= minDay || days > maxDay) {
+				continue;
+			}
+			
 			String uid = AppUtil.md5(tmpR + this.maxDay);
 			String sid = city.getSid();
 			String ambiguitySname = city.getAmbiguitySname();
@@ -568,28 +579,7 @@ public class GA {
 		});
 		
 		//------------------------------------
-		System.out.println("最佳长度出现代数：" + bestGen);
-		System.out.println("最佳长度" + bestLen);
-		System.out.println("最佳酒店：" + bestHotelIds);
-		System.out.println("最佳路径：");
-		for (int i = 0; i < sceneryNum; i++) {
-			System.out.print(bestRoute[i] + ",");
-		}
-		System.out.println();
-		double price = 0.0;
-		double hotness = 0.0;
-		double days = 0.0;
-		for (int i = 0; i < sceneryNum; i++) {
-			if (bestRoute[i] == 1) {
-				Scenery scene = sceneryList.get(i);
-				price += scene.getPrice();
-				hotness += scene.getViewCount();
-				days += scene.getVisitDay();
-				System.out.print(scene.getSname() + ",");
-			}
-		}
-		System.out.println();
-		System.out.println("景点花费：" + price +" 元");
+
 		
 //		for (int i = 0; i < routeList.size(); i++) {
 //			Route route = routeList.get(i);
@@ -607,7 +597,31 @@ public class GA {
 	}
 	
 	
-	
+	public void reportResult(){
+		System.out.println("------------------------------");
+		System.out.println("最佳长度出现代数：" + bestGen);
+		System.out.println("最佳长度" + bestLen);
+		System.out.println("最佳酒店：" + bestHotelIds);
+//		System.out.println("最佳路径：");
+//		for (int i = 0; i < sceneryNum; i++) {
+//			System.out.print(bestRoute[i] + ",");
+//		}
+//		System.out.println();
+		double price = 0.0;
+		double hotness = 0.0;
+		double days = 0.0;
+		for (int i = 0; i < sceneryNum; i++) {
+			if (bestRoute[i] == 1) {
+				Scenery scene = sceneryList.get(i);
+				price += scene.getPrice();
+				hotness += scene.getViewCount();
+				days += scene.getVisitDay();
+				System.out.print(scene.getSname() + ",");
+			}
+		}
+		System.out.println();
+		System.out.println("景点花费：" + price +" 元");
+	}
 	
 	
 	

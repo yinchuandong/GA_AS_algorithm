@@ -1,4 +1,4 @@
-package aco.tour;
+package aco.tour.usual;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import aco.tour.ACO;
 import util.HotelUtil;
 import util.RouteUtil;
 import util.SceneryUtil;
@@ -18,19 +17,19 @@ import model.Scenery;
 public class Main {
 	
 	public static void main(String[] args) {
-		testOne();
 //		testMore();
+		testOne();
 	}
 	
 	public static void testOne(){
 		System.out.println("begin");
 		long beginT = System.currentTimeMillis();
+		long beginM = Runtime.getRuntime().freeMemory();
+//		ArrayList<Scenery> list = loadData("./guangzhou.txt");
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
 		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
 		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
 		
-		long beginM = Runtime.getRuntime().freeMemory();
-
 		ACO aco = new ACO();
 		aco.init(city, sceneryList, hotelMap, 100, 2.0, 3.0);
 		ArrayList<Route> routeList = aco.run(1000);
