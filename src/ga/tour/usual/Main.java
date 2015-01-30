@@ -69,6 +69,9 @@ public class Main {
 			ArrayList<Route> routeList = ga.run();
 			
 			int subLen = routeList.size();
+			if(subLen == 0){
+				continue;
+			}
 			subLen = subLen > 10 ? 10 : subLen - 1;
 			
 			List<Route> topNList = routeList.subList(0, subLen);

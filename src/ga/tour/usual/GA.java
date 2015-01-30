@@ -133,11 +133,6 @@ public class GA {
 	private Scenery city;
 	
 	/**
-	 * greedy algorithm util
-	 */
-	private GreedyAlgorithm greedyAgm;
-	
-	/**
 	 * 
 	 * @param scale 种群规模
 	 * @param maxGen 运行代数
@@ -209,12 +204,25 @@ public class GA {
 	}
 	
 	/**
-	 * initialize the population by greedy algorithm <br/>
+	 * initialize the population by random <br/>
 	 * encode the chromosome in the pattern like 01001
 	 */
 	private void initGroup(){
-		this.greedyAgm = new GreedyAlgorithm(minDay, maxDay, scale, sceneryList);
-		oldPopulation = greedyAgm.getInitPopulation();
+		for (int i = 0; i < scale; i++) {
+			double tmpDays = 0.0;
+			for (int j = 0; j < sceneryNum; j++) {
+				int value = getRandomNum() % 2;
+				oldPopulation[i][j] = value;
+				if(value == 0){
+					continue;
+				}
+				tmpDays += sceneryList.get(j).getVisitDay();
+				if(tmpDays > maxDay){
+					tmpDays -= sceneryList.get(j).getVisitDay();
+					break;
+				}
+			}
+		}
 	}
 	
 	/**
@@ -229,6 +237,7 @@ public class GA {
 		double days = 0.0;
 		//酒店当前染色体对应的酒店信息
 		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
+		
 		for (int i = 0; i < chromosome.length; i++) {
 			if (chromosome[i] != 1) {
 				continue;
@@ -322,21 +331,12 @@ public class GA {
 		int maxId = 0;
 		double maxFitness = fitness[0];
 		
-		int minId = 0;
-		double minFitness = fitness[0];
-		
 		//save the best and worst city's id and fitness
 		for (int i = 1; i < scale; i++) {
 			//save the best chromosome
 			if (maxFitness < fitness[i]) {
 				maxFitness = fitness[i];
 				maxId = i;
-			}
-			
-			//save the worst chromosome
-			if (minFitness > fitness[i]){
-				minFitness = fitness[i];
-				minId = i;
 			}
 		}
 		
@@ -353,7 +353,6 @@ public class GA {
 		// copy the best chromosome into new population and put on the first of population
 		this.copyChromosome(0, maxId);
 		
-		this.greedyAgm.optimize(oldPopulation[minId]);
 	}
 	
 	/**
@@ -529,7 +528,6 @@ public class GA {
 					days += scene.getVisitDay();
 					tmpR += scene.getSid();
 					sList.add(scene);
-//					System.out.print(scene.getSname() + ",");
 				}
 			}
 			
@@ -584,10 +582,12 @@ public class GA {
 //		for (int i = 0; i < routeList.size(); i++) {
 //			Route route = routeList.get(i);
 //			ArrayList<Scenery> sceneList = route.getSceneryList();
+//			double tmpDays = 0.0;
 //			for (Scenery scenery : sceneList) {
+//				tmpDays += scenery.getVisitDay();
 //				System.out.print(scenery.getSname() + ",");
 //			}
-//			System.out.println();
+//			System.out.println("-----" + tmpDays);
 //			if(i >= 20){
 //				break;
 //			}

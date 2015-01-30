@@ -22,6 +22,7 @@ import model.Scenery;
 import org.omg.PortableInterceptor.HOLDING;
 
 import util.AppUtil;
+import util.SceneryUtil;
 
 
 public class GA {
@@ -229,6 +230,7 @@ public class GA {
 		double days = 0.0;
 		//酒店当前染色体对应的酒店信息
 		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
+		
 		for (int i = 0; i < chromosome.length; i++) {
 			if (chromosome[i] != 1) {
 				continue;
@@ -324,6 +326,7 @@ public class GA {
 		
 		int minId = 0;
 		double minFitness = fitness[0];
+		ArrayList<Integer> minIdList = new ArrayList<Integer>();
 		
 		//save the best and worst city's id and fitness
 		for (int i = 1; i < scale; i++) {
@@ -337,6 +340,7 @@ public class GA {
 			if (minFitness > fitness[i]){
 				minFitness = fitness[i];
 				minId = i;
+				minIdList.add(i);
 			}
 		}
 		
@@ -354,6 +358,9 @@ public class GA {
 		this.copyChromosome(0, maxId);
 		
 		this.greedyAgm.optimize(oldPopulation[minId]);
+//		for (Integer id : minIdList) {
+//			this.greedyAgm.optimize(oldPopulation[id]);
+//		}
 	}
 	
 	/**

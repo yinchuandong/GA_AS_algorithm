@@ -173,7 +173,7 @@ public class GreedyAlgorithm {
 	 * @param s2
 	 * @return
 	 */
-	private double getDistance(Scenery s1, Scenery s2){
+	public double getDistance(Scenery s1, Scenery s2){
 		double distance = 0.0;
 		double x1 = s1.getMapX();
 		double y1 = s1.getMapY();

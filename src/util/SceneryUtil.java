@@ -353,6 +353,22 @@ public class SceneryUtil {
 	}
 	
 	/**
+	 * 计算欧式距离
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
+	public static double calcDistance(Scenery s1, Scenery s2){
+		double distance = 0.0;
+		double x1 = s1.getMapX();
+		double y1 = s1.getMapY();
+		double x2 = s2.getMapX();
+		double y2 = s2.getMapY();
+		distance = Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+		return distance;
+	}
+	
+	/**
 	 * 将景点导入到text中
 	 */
 	public static void exportToText(){
