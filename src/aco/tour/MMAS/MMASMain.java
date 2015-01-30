@@ -15,7 +15,7 @@ import model.Hotel;
 import model.Route;
 import model.Scenery;
 
-public class Main {
+public class MMASMain {
 	
 	public static void main(String[] args) {
 //		testOne();
@@ -32,8 +32,8 @@ public class Main {
 		long beginM = Runtime.getRuntime().freeMemory();
 
 		ACO aco = new ACO();
-		aco.init(city, sceneryList, hotelMap, 100, 2.0, 3.0);
-		ArrayList<Route> routeList = aco.run(1000);
+		aco.init(city, sceneryList, hotelMap, 20, 2.0, 3.0);
+		ArrayList<Route> routeList = aco.run(100);
 //		aco.reportResult();
 		
 		System.out.println("-----split-------");
@@ -45,8 +45,9 @@ public class Main {
 		
 		long tmpDelay = System.currentTimeMillis() - beginT;
 		long tmpMem = (beginM - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-		System.out.println("热度：" + hotness + "  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
-	}
+		System.out.print("最优解：" + routeList.get(0).getHotness());
+		System.out.print(" 平均解：" + hotness);
+		System.out.println("  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");	}
 	
 	public static void testMore(){
 		System.out.println("begin");
@@ -66,7 +67,7 @@ public class Main {
 			long beginM = Runtime.getRuntime().freeMemory();
 			ACO aco = new ACO();
 			aco.init(city, sceneryList, hotelMap, 100, 2.0, 3.0);
-			ArrayList<Route> routeList = aco.run(1000);
+			ArrayList<Route> routeList = aco.run(500);
 			
 			int subLen = routeList.size();
 			subLen = subLen > 20 ? 20 : subLen - 1;
@@ -81,8 +82,9 @@ public class Main {
 			
 			avgTime += tmpDelay;
 			avgMem += tmpMem ;
-			System.out.println("热度：" + hotness + "  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
-		}
+			System.out.print("最优解：" + routeList.get(0).getHotness());
+			System.out.print(" 平均解：" + hotness);
+			System.out.println("  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");		}
 		avgHotness = avgHotness / runGens;
 		avgTime = avgTime / runGens;
 		avgMem = avgMem / runGens;

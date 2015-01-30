@@ -134,9 +134,10 @@ public class ACO {
 		for (int gen = 0; gen < maxgen; gen++) {
 			// 每一只蚂蚁的移动过程
 			for (int i = 0; i < antCount; i++) {
-				// 对该蚂蚁进行城市路线选择
-				ants[i].calcProb(pheromone, hotness);
+				
 				for (int j = 1; j < sceneCount; j++) {
+					// 对该蚂蚁进行城市路线选择
+					ants[i].calcProb(pheromone, hotness);
 					// select需要增加一个返回值
 					if (!ants[i].selectNextCity(j)) {
 						break;
@@ -280,7 +281,6 @@ public class ACO {
 		System.out.println("decode end");
 		return routeList;
 	}
-	
 	
 
 	/**

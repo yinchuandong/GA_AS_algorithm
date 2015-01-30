@@ -12,7 +12,7 @@ import util.HotelUtil;
 import util.RouteUtil;
 import util.SceneryUtil;
 
-public class Main {
+public class MGAMain {
 	
 
 	public static void main(String[] args) throws Exception{
