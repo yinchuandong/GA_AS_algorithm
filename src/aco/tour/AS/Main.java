@@ -1,4 +1,4 @@
-package aco.tour.usual;
+package aco.tour.AS;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,4 +1,4 @@
-package aco.tour.usual;
+package aco.tour.MMAS;
 
 import java.util.ArrayList;
 import java.util.Collections;

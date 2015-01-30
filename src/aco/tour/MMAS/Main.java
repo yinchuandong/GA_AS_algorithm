@@ -1,4 +1,4 @@
-package aco.tour.optimized;
+package aco.tour.MMAS;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import aco.tour.optimized.ACO;
+import aco.tour.MMAS.ACO;
 import util.HotelUtil;
 import util.RouteUtil;
 import util.SceneryUtil;

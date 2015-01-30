@@ -1,4 +1,4 @@
-package aco.tour.optimized;
+package aco.tour.AS;
 
 import java.util.ArrayList;
 import java.util.Collections;
