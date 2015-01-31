@@ -1,5 +1,7 @@
 package ga.tour.optimized;
 
+import ga.tour.optimized.MGGA;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import util.HotelUtil;
 import util.RouteUtil;
 import util.SceneryUtil;
 
-public class MGAMain {
+public class MGGAMain {
 	
 
 	public static void main(String[] args) throws Exception{
@@ -32,7 +34,7 @@ public class MGAMain {
 //		Collections.sort(sceneryList);
 //		Collections.reverse(sceneryList);
 
-		GA ga = new GA(300, 1000, 0.9, 0.9);
+		MGGA ga = new MGGA(300, 1000, 0.9, 0.9);
 		ga.init(city, sceneryList, hotelMap, 2.0, 3.0);
 		ArrayList<Route> routeList = ga.run();
 		
@@ -62,29 +64,32 @@ public class MGAMain {
 		
 		for (int i = 0; i < runGens; i++) {
 			long beginT = System.currentTimeMillis();
+			Runtime.getRuntime().gc();
 			long beginM = Runtime.getRuntime().freeMemory();
 			
-			GA ga = new GA(500, 1000, 0.9, 0.9);
+			MGGA ga = new MGGA(1000, 500, 0.9, 0.9);
 			ga.init(city, sceneryList, hotelMap, 2.0, 3.0);
 			ArrayList<Route> routeList = ga.run();
 			
 			int subLen = routeList.size();
-			subLen = subLen > 10 ? 10 : subLen - 1;
+			if(subLen == 0){
+				continue;
+			}
+			subLen = subLen > 20 ? 20 : subLen - 1;
 			
 			List<Route> topNList = routeList.subList(0, subLen);
 			
 			double hotness = RouteUtil.caclAvgHotness(topNList);
 			avgHotness += hotness;
-			if(hotness < 100){
-				ga.reportResult();
-			}
 			
 			long tmpDelay = System.currentTimeMillis() - beginT;
 			long tmpMem = (beginM - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
 			
 			avgTime += tmpDelay;
 			avgMem += tmpMem ;
-			System.out.println("热度：" + hotness + "  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
+			System.out.print("最优解：" + routeList.get(0).getHotness());
+			System.out.print(" 平均解：" + hotness);
+			System.out.println("  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
 		}
 		avgHotness = avgHotness / runGens;
 		avgTime = avgTime / runGens;

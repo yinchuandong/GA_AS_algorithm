@@ -25,7 +25,7 @@ import util.AppUtil;
 import util.SceneryUtil;
 
 
-public class GA {
+public class MGGA {
 	
 	/**
 	 * 种群规模
@@ -145,7 +145,7 @@ public class GA {
 	 * @param pc 交叉概率
 	 * @param pm 变异概率
 	 */
-	public GA(int scale, int maxGen, double pc, double pm){
+	public MGGA(int scale, int maxGen, double pc, double pm){
 		this.scale = scale;
 		this.maxGen = maxGen;
 		this.pc = pc;

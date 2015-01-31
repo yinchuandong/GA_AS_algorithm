@@ -62,6 +62,7 @@ public class GAMain {
 		
 		for (int i = 0; i < runGens; i++) {
 			long beginT = System.currentTimeMillis();
+			Runtime.getRuntime().gc();
 			long beginM = Runtime.getRuntime().freeMemory();
 			
 			GA ga = new GA(500, 1000, 0.9, 0.9);
@@ -72,22 +73,21 @@ public class GAMain {
 			if(subLen == 0){
 				continue;
 			}
-			subLen = subLen > 10 ? 10 : subLen - 1;
+			subLen = subLen > 20 ? 20 : subLen - 1;
 			
 			List<Route> topNList = routeList.subList(0, subLen);
 			
 			double hotness = RouteUtil.caclAvgHotness(topNList);
 			avgHotness += hotness;
-			if(hotness < 100){
-				ga.reportResult();
-			}
 			
 			long tmpDelay = System.currentTimeMillis() - beginT;
 			long tmpMem = (beginM - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
 			
 			avgTime += tmpDelay;
 			avgMem += tmpMem ;
-			System.out.println("热度：" + hotness + "  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
+			System.out.print("最优解：" + routeList.get(0).getHotness());
+			System.out.print(" 平均解：" + hotness);
+			System.out.println("  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
 		}
 		avgHotness = avgHotness / runGens;
 		avgTime = avgTime / runGens;
