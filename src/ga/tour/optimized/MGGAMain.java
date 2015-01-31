@@ -18,14 +18,14 @@ public class MGGAMain {
 	
 
 	public static void main(String[] args) throws Exception{
-//		testOne();
-		testMore();
+		testOne();
+//		testMore();
 	}
 	
 	public static void testOne() throws Exception{
 		System.out.println("begin");
 		long beginT = System.currentTimeMillis();
-		long beginM = Runtime.getRuntime().freeMemory();
+		
 		
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
 		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
@@ -33,8 +33,10 @@ public class MGGAMain {
 		//sort all the scenery according to viewCount
 //		Collections.sort(sceneryList);
 //		Collections.reverse(sceneryList);
+		Runtime.getRuntime().gc();
+		long beginM = Runtime.getRuntime().totalMemory();
 
-		MGGA ga = new MGGA(300, 1000, 0.9, 0.9);
+		MGGA ga = new MGGA(300, 500, 0.9, 0.9);
 		ga.init(city, sceneryList, hotelMap, 2.0, 3.0);
 		ArrayList<Route> routeList = ga.run();
 		
