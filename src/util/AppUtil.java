@@ -12,6 +12,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 
 public class AppUtil {
 
@@ -39,6 +44,19 @@ public class AppUtil {
 		}
 		return "";
 
+	}
+	
+	/**
+	 * beautify messy json string
+	 * @param uglyJSONString
+	 * @return
+	 */
+	public static String jsonFormatter(String uglyJSONString){
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		JsonParser jp = new JsonParser();
+		JsonElement je = jp.parse(uglyJSONString);
+		String prettyJsonString = gson.toJson(je);
+		return prettyJsonString;
 	}
 	
 	/**

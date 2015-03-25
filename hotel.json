@@ -1,0 +1,911 @@
+[
+  {
+    "uid": "1bbe8fdedf7bf525250bd00f",
+    "sid": "c1fea00f9b9df6dff740300b",
+    "hotelName": "上海优乐家自助服务公寓世纪大道店",
+    "hotelAddress": "浦东新区福山路519号（兴业嘉园，浦电路地铁站旁）",
+    "hotelPhone": "15000216733",
+    "commentScore": 4.5,
+    "price": 377
+  },
+  {
+    "uid": "9b763b20b24e2685be4842af",
+    "sid": "55f223088cc57454b065b00b",
+    "hotelName": "东营蓝海御华大酒店",
+    "hotelAddress": "东营区潍河路319号（胶州路南首湿地公园对面，清风湖西侧）",
+    "hotelPhone": "(0546)7088888",
+    "commentScore": 4.8,
+    "price": 387
+  },
+  {
+    "uid": "442076467d56c96adeee8b2d",
+    "sid": "169db90e13551b123dffaee2",
+    "hotelName": "安徽黄山大厦寿西湖饭店",
+    "hotelAddress": "安徽省寿县寿春镇西大街",
+    "hotelPhone": "(0564)4033288",
+    "commentScore": 4.4,
+    "price": 108
+  },
+  {
+    "uid": "74c933fb9fa11d479f82ea9a",
+    "sid": "2f26394cbc1a34e1c43455c8",
+    "hotelName": "三正半山温泉酒店",
+    "hotelAddress": "莆田市城厢区龙桥街道东圳西路1539号（延寿山庄内）",
+    "hotelPhone": "(0594)2798888",
+    "commentScore": 4.4,
+    "price": 394
+  },
+  {
+    "uid": "387c5b112b4ccdb0c91b9590",
+    "sid": "38b64f47a4211acb2b024eb1",
+    "hotelName": "济南E城山色国际青年旅舍",
+    "hotelAddress": "济南市历下区环山路2号鸿苑大厦23层C座",
+    "hotelPhone": "(0531)89289100",
+    "commentScore": 4.7,
+    "price": 80
+  },
+  {
+    "uid": "d0d4e84673148734465726d3",
+    "sid": "92091f1255bf99d28a5904cf",
+    "hotelName": "宁夏中卫天和时尚酒店",
+    "hotelAddress": "宁夏中卫市沙坡头区鼓楼东街蔡桥路(近鼓楼东街)",
+    "hotelPhone": "(0955)7064666",
+    "commentScore": 4.5,
+    "price": 127
+  },
+  {
+    "uid": "eccf234190fb6a03c26c1495",
+    "sid": "cbdc8915309ea1716414163a",
+    "hotelName": "瑞亚海岸假日酒店",
+    "hotelAddress": "未来海岸小区东门",
+    "hotelPhone": "(0592)3759998",
+    "commentScore": 4.3,
+    "price": 98
+  },
+  {
+    "uid": "1eeed546a21299ebb5147fcd",
+    "sid": "d9977e7ede1cf630340b58ca",
+    "hotelName": "长沙市开福区大和宾馆",
+    "hotelAddress": "芙蓉中路458号平安大厦8-9楼",
+    "hotelPhone": "0731-82893668",
+    "commentScore": 5,
+    "price": 95
+  },
+  {
+    "uid": "08f1f1f5ece0fbcb89db73bf",
+    "sid": "c23954c85f19f4778b2d79cd",
+    "hotelName": "潞城大酒店",
+    "hotelAddress": "山西省长治潞城市中华西街155号",
+    "hotelPhone": "(0355)6778155",
+    "commentScore": 3.4,
+    "price": 157
+  },
+  {
+    "uid": "7c1e623926f9b4957adbd2b5",
+    "sid": "73b4f9374db66f54bc91ee10",
+    "hotelName": "维多利亚宾馆",
+    "hotelAddress": "丽水莲都区中东路338号",
+    "hotelPhone": "(0578)2215888",
+    "commentScore": 4.5,
+    "price": 148
+  },
+  {
+    "uid": "fb6e626a91b268a4bd4842a6",
+    "sid": "82d64d001b3184b2b2b67f22",
+    "hotelName": "渭水源大酒店",
+    "hotelAddress": "甘肃省定西市渭源县（气象局附近）",
+    "hotelPhone": "(0932)4137688",
+    "commentScore": 4.8,
+    "price": 168
+  },
+  {
+    "uid": "701546dbd1ea1b8822f01775",
+    "sid": "1f08ffdcdfcc000b29758600",
+    "hotelName": "东阳商务宾馆（恩施航空花园店）",
+    "hotelAddress": "恩施航空花园路504号",
+    "hotelPhone": "(0718)8028888",
+    "commentScore": 4.4,
+    "price": 91
+  },
+  {
+    "uid": "a75ccced4bba3b5bb05c6a3e",
+    "sid": "53a32ebeee381df41344621f",
+    "hotelName": "老周庄人家客栈（水之韵）",
+    "hotelAddress": "昆山市周庄镇蚬园弄26号",
+    "hotelPhone": "(0512)57883333",
+    "commentScore": 5,
+    "price": 150
+  },
+  {
+    "uid": "040dc8ccc4ed4583f13cbaf4",
+    "sid": "0ecc4b57f9374db66f54e11d",
+    "hotelName": "九华山圣苑山庄",
+    "hotelAddress": "九华镇灯塔新村55号（百岁宫缆车、财神殿附近）",
+    "hotelPhone": "18905668917",
+    "commentScore": 4.9,
+    "price": 129
+  },
+  {
+    "uid": "a0c84e7170adbe9035b06cdf",
+    "sid": "727eae1d394cbc1a34e154b1",
+    "hotelName": "成都极美酒店",
+    "hotelAddress": "青羊区文翁路139号力迅领筑公寓七楼(人民公园东南角)",
+    "hotelPhone": "(028)85358585",
+    "commentScore": 4.8,
+    "price": 161
+  },
+  {
+    "uid": "b3aa435dba857e1215764348",
+    "sid": "f24ba171641493d83c0c1426",
+    "hotelName": "苏州方源商旅酒店",
+    "hotelAddress": "苏州工业园区苏虹东路155号",
+    "hotelPhone": "(0512)88852333",
+    "commentScore": 3.8,
+    "price": 179
+  },
+  {
+    "uid": "aaaddf21e5b44d6883a00c4e",
+    "sid": "184c690f23d1dc24b39fb80c",
+    "hotelName": "阳西县田园商务宾馆",
+    "hotelAddress": "阳江上洋镇X605县道上河路23号(上洋农业银行往河北方向300米)",
+    "hotelPhone": "(0662)5279388",
+    "commentScore": 4.3,
+    "price": 139
+  },
+  {
+    "uid": "86f303357f288d49336212cd",
+    "sid": "cedc1efa15d8330a2308b5eb",
+    "hotelName": "通化东方华龙宾馆",
+    "hotelAddress": "梅河口市银河大街爱民医院东侧",
+    "hotelPhone": "(0435)4245666",
+    "commentScore": 4.1,
+    "price": 108
+  },
+  {
+    "uid": "e4dae74a66563195b5147f96",
+    "sid": "002f7594baeb76b3690fbd19",
+    "hotelName": "庐山温馨家园",
+    "hotelAddress": "江西九江庐山东谷日照社区",
+    "hotelPhone": "15979965353",
+    "commentScore": 4.8,
+    "price": 80
+  },
+  {
+    "uid": "dad33aa92352c714ab0dd88f",
+    "sid": "963ad06f5707715ac511d31b",
+    "hotelName": "湖州蜗牛青年旅舍",
+    "hotelAddress": "吴兴区衣裳街钦古巷8号（馆驿河头155号）",
+    "hotelPhone": "(0572)2025999",
+    "commentScore": 4.7,
+    "price": 80
+  },
+  {
+    "uid": "9d60c4acbd7b072c2bd7abf8",
+    "sid": "eeeff4778b2de74f2ebe6705",
+    "hotelName": "昆明春城人家客栈",
+    "hotelAddress": "昆明市博海路12号附7号",
+    "hotelPhone": "13078706615",
+    "commentScore": 3.9,
+    "price": 157
+  },
+  {
+    "uid": "bc00802d80cb15b2704b8771",
+    "sid": "ccfd55bf99d28a59bddd051c",
+    "hotelName": "汉庭酒店(安庆华中西路店)",
+    "hotelAddress": "安徽安庆迎江区华中西路265号（老郊区政府）",
+    "hotelPhone": "(0556)5680000",
+    "commentScore": 4,
+    "price": 101
+  },
+  {
+    "uid": "306d3c15e5c5d8716da3cc03",
+    "sid": "1db9b0656bc57594baebbf1e",
+    "hotelName": "格林豪泰酒店(天津十四经路音乐学院店)",
+    "hotelAddress": "天津市河东区津塘路35号(十四经路3号)",
+    "hotelPhone": "022-59661616",
+    "commentScore": 5,
+    "price": 100
+  },
+  {
+    "uid": "51014570f8ea4709e81e97ed",
+    "sid": "d25aadacab240abb6cf9cfb6",
+    "hotelName": "舟山嵊泗海腾湾宾馆",
+    "hotelAddress": "舟山嵊泗县五龙乡色彩艺术边礁岙村延边路65号(近和尚套景区)",
+    "hotelPhone": "13666701022",
+    "commentScore": 4.1,
+    "price": 100
+  },
+  {
+    "uid": "224e465a5023140895f08cee",
+    "sid": "094f8617eee55d1d00660e04",
+    "hotelName": "麦地第一家宾馆",
+    "hotelAddress": "河南洛阳洛龙区龙门石窟景区北郊东100米",
+    "hotelPhone": "15137981724",
+    "commentScore": 3.3,
+    "price": 84
+  },
+  {
+    "uid": "a6919223648034bccae33c31",
+    "sid": "46ce6303cc8575ed2e692602",
+    "hotelName": "欧韵精品酒店",
+    "hotelAddress": "长安区中山东路与谈固北大街交叉口北行80米路西",
+    "hotelPhone": "(0311)85525777",
+    "commentScore": 4.4,
+    "price": 109
+  },
+  {
+    "uid": "d5f93c0eea585745eddfca1f",
+    "sid": "28942b074d001b3184b27efe",
+    "hotelName": "上海大酒店",
+    "hotelAddress": "黄浦区九江路505号",
+    "hotelPhone": "4007339993",
+    "commentScore": 4.7,
+    "price": 918
+  },
+  {
+    "uid": "9d7aa3d51f10a63a83a00c0e",
+    "sid": "54492fbeee381df4134462f5",
+    "hotelName": "昆明阳光SUNNY青年旅舍",
+    "hotelAddress": "云南昆明五华区南屏街顺城新月花园A座1单元32楼05号",
+    "hotelPhone": "13330533232",
+    "commentScore": 4.7,
+    "price": 80
+  },
+  {
+    "uid": "f139682a6606cf92b5f42f37",
+    "sid": "a60691d83c0c3f154ff112e1",
+    "hotelName": "汕头市银海宾馆",
+    "hotelAddress": "金平区中山路27号（公园路与中山路交叉口）",
+    "hotelPhone": "(0754)89899199",
+    "commentScore": 4.3,
+    "price": 94
+  },
+  {
+    "uid": "73678a60b287e05472455b05",
+    "sid": "34a05d1d0066d60419ef0cb6",
+    "hotelName": "速8酒店(新疆喀什人民广场店店)",
+    "hotelAddress": "新疆自治区喀什市阿热亚路810号恰办老城旅游宾馆",
+    "hotelPhone": "(0998)2591555",
+    "commentScore": 4.4,
+    "price": 136
+  },
+  {
+    "uid": "7a63570b2717c658d5b74e85",
+    "sid": "722591d2d06f5707715ad2b0",
+    "hotelName": "香港太子酒店-马哥孛罗(Prince Hotel, Marco Polo)",
+    "hotelAddress": "香港九龙 尖沙嘴广东道23号海港城",
+    "hotelPhone": "",
+    "commentScore": 4.7,
+    "price": 1982
+  },
+  {
+    "uid": "7539384000fec5219de3212c",
+    "sid": "8051a031877117f5f47a5e04",
+    "hotelName": "苏州它处青年旅舍",
+    "hotelAddress": "江苏苏州姑苏区东采莲巷10号",
+    "hotelPhone": "18015411020",
+    "commentScore": 4.8,
+    "price": 80
+  },
+  {
+    "uid": "504d6113a7e820cd4657263c",
+    "sid": "fc23c0365b0af2c9c0054806",
+    "hotelName": "金种子宾馆",
+    "hotelAddress": "兴城市兴海南街10号楼（金种子宾馆斜对面）",
+    "hotelPhone": "(0429)5113333",
+    "commentScore": 4,
+    "price": 109
+  },
+  {
+    "uid": "e85e25270f64be2d95f08c61",
+    "sid": "ae0f36d9222e5d285f52f3fc",
+    "hotelName": "天外天宾馆",
+    "hotelAddress": "黄冈市黄州区宝塔大道21号（宝塔大道中段）",
+    "hotelPhone": "(0713)8389009",
+    "commentScore": 3.8,
+    "price": 80
+  },
+  {
+    "uid": "bd43d3d4f0b1fd5e28201ace",
+    "sid": "b3161261cb1fadacab24c122",
+    "hotelName": "大理喜洲蜜湾客栈",
+    "hotelAddress": "大理市喜洲城北村106号。（喜林苑以东300m）",
+    "hotelPhone": "15087289900",
+    "commentScore": 4.9,
+    "price": 80
+  },
+  {
+    "uid": "ad61a48d06129b268bdb736c",
+    "sid": "7114c05f301a4dadc1b4cb1e",
+    "hotelName": "如家快捷酒店(北京密云长城环岛店)",
+    "hotelAddress": "密云县新南路43号",
+    "hotelPhone": "010-61095988",
+    "commentScore": 4.4,
+    "price": 123
+  },
+  {
+    "uid": "637df60a74e6126b41afe6ed",
+    "sid": "1e34a0f44f47a4211acb4115",
+    "hotelName": "开元名都大酒店",
+    "hotelAddress": "宁波市鄞州区首南中路666号（与前河南路交叉口）",
+    "hotelPhone": "(0574)83078888",
+    "commentScore": 4.7,
+    "price": 438
+  },
+  {
+    "uid": "46c21e88bd000ffbca2915e2",
+    "sid": "87e52f699613cd1729d625fb",
+    "hotelName": "六安奇缘宾馆)",
+    "hotelAddress": "金寨天堂寨镇前畈村(天堂寨景区停车场对面)",
+    "hotelPhone": "",
+    "commentScore": 4.8,
+    "price": 118
+  },
+  {
+    "uid": "ed27c7f57cd77306c056aca9",
+    "sid": "7034330a23088cc57454b31f",
+    "hotelName": "南京紫藤酒店公寓",
+    "hotelAddress": "秦淮区仙鹤街2号精锐soho4楼（仙鹤街与集庆路交叉口西北角）",
+    "hotelPhone": "13851855497",
+    "commentScore": 4.7,
+    "price": 168
+  },
+  {
+    "uid": "3d4a8be75aaefdde0682c210",
+    "sid": "6a20d1b88617eee55d1d010e",
+    "hotelName": "银湾酒店",
+    "hotelAddress": "广州市番禺区南村镇里仁洞兴业路3号畅兴大厦",
+    "hotelPhone": "(020)28676266",
+    "commentScore": 4.1,
+    "price": 148
+  },
+  {
+    "uid": "37d60a46e48d1d611e1d1162",
+    "sid": "41f610d8330a23088cc5b2ff",
+    "hotelName": "云升宾馆",
+    "hotelAddress": "金华婺城区迪耳路278号（五一路与迪耳路交口）",
+    "hotelPhone": "(0579)82076288",
+    "commentScore": 4.7,
+    "price": 129
+  },
+  {
+    "uid": "c60840693ccfdb1278f79681",
+    "sid": "cbff57c0a53ec6adcd2f8dfe",
+    "hotelName": "登封北纬少林国际青年旅舍",
+    "hotelAddress": "登封崇福路西十九巷5号（崇福路电信营业厅旁边胡同）",
+    "hotelPhone": "(0371)62899911",
+    "commentScore": 4.6,
+    "price": 80
+  },
+  {
+    "uid": "53eed14c0595669d9222e09d",
+    "sid": "b7e5ab240abb6cf9c05fccba",
+    "hotelName": "湖州南浔茶之韵书吧",
+    "hotelAddress": "南浔镇百间楼河西23号",
+    "hotelPhone": "13857257641",
+    "commentScore": 4.6,
+    "price": 198
+  },
+  {
+    "uid": "ecf16d89d00cec6c715e80ef",
+    "sid": "113b1a1d89d2a0f44f474318",
+    "hotelName": "章丘尚客优快捷酒店百脉泉店",
+    "hotelAddress": "山东省济南市章丘市双泉路明水车站大街中段（章丘四中南邻）",
+    "hotelPhone": "(0531)83610088",
+    "commentScore": 4.3,
+    "price": 121
+  },
+  {
+    "uid": "48eb005855b353ac2fe67b25",
+    "sid": "044820f5663ee7c82736e816",
+    "hotelName": "金桂旅馆",
+    "hotelAddress": "海宁路151号",
+    "hotelPhone": "(021)63567938",
+    "commentScore": 5,
+    "price": 136
+  },
+  {
+    "uid": "e6ee2fd2ecdbe6512b11d148",
+    "sid": "b3f51261cb1fadacab24c1c1",
+    "hotelName": "阳澄湖澜廷度假酒店",
+    "hotelAddress": "江苏省苏州工业园区阳澄半岛慈云路168号（重元寺北）",
+    "hotelPhone": "(0512)62988888-5710,(0512)62981044",
+    "commentScore": 4.1,
+    "price": 800
+  },
+  {
+    "uid": "75d0881a839844543a04b179",
+    "sid": "46a08b2de74f2ebeee386424",
+    "hotelName": "北京到家连锁酒店北苑店",
+    "hotelAddress": "朝阳区来广营乡北苑朝来绿色家园来春园小区阳光山水公寓二楼",
+    "hotelPhone": "(010)84950936",
+    "commentScore": 3.1,
+    "price": 80
+  },
+  {
+    "uid": "d889243b6a84c479b45f1eb9",
+    "sid": "9844cd2feedcbaf11bc6881a",
+    "hotelName": "如家酒店(建国西路店)",
+    "hotelAddress": "泉山区建国西路92号（永安广场邮电大厦隔壁）",
+    "hotelPhone": "(0516)87897777",
+    "commentScore": 4.8,
+    "price": 81
+  },
+  {
+    "uid": "7388dffd253156ead2ff23b7",
+    "sid": "b1290bbb6cf9c05f301acdfe",
+    "hotelName": "黄大仙宾馆",
+    "hotelAddress": "人民北路89-1号",
+    "hotelPhone": "(0579)88866000",
+    "commentScore": 4.1,
+    "price": 98
+  },
+  {
+    "uid": "2864363e2cee765cbda240b9",
+    "sid": "e5c64d36d6f3c821e59a28fd",
+    "hotelName": "拉萨昀遥青年旅舍",
+    "hotelAddress": "拉萨市八一南路419号",
+    "hotelPhone": "(0891)6866411",
+    "commentScore": 4.3,
+    "price": 80
+  },
+  {
+    "uid": "54611d2f3b4d26b03a04b18c",
+    "sid": "0a99cb1fadacab240abbce0b",
+    "hotelName": "焦作昆仑乐居商务酒店温县店",
+    "hotelAddress": "焦作市司马大道(S237)与太行路交叉口",
+    "hotelPhone": "0391-6107999",
+    "commentScore": 4.4,
+    "price": 104
+  },
+  {
+    "uid": "b6cf20af943c928e593ac824",
+    "sid": "ae0bdfcc000b2975e4558724",
+    "hotelName": "格林联盟珠海市府酒店",
+    "hotelAddress": "珠海香洲区海滨北路10号(市政府旁)",
+    "hotelPhone": "(0756)2258999",
+    "commentScore": 4.5,
+    "price": 154
+  },
+  {
+    "uid": "1264570d8426ddae2902e117",
+    "sid": "26cee7c8273681fa46539603",
+    "hotelName": "庙山假日宾馆",
+    "hotelAddress": "江夏区庙山华泰街特一号（江夏大道与华泰街交叉口）",
+    "hotelPhone": "(027)87968188",
+    "commentScore": 4.2,
+    "price": 98
+  },
+  {
+    "uid": "fc3e38fb2cce2bbdaecb66d4",
+    "sid": "14b94d51e5187498603ac7a6",
+    "hotelName": "迪庆季候鸟雪山旅馆",
+    "hotelAddress": "云南省迪庆藏族自治州德钦县梅里雪山雾浓顶观景台",
+    "hotelPhone": "13388875949",
+    "commentScore": 2.9,
+    "price": 300
+  },
+  {
+    "uid": "d7ff6a0b7a4d86ec58f6be53",
+    "sid": "7a3715d8330a23088cc5b23e",
+    "hotelName": "武汉华岭戴斯酒店",
+    "hotelAddress": "武汉市江岸区金桥大道塔子湖街余华岭特2号（近市民之家）",
+    "hotelPhone": "(027)85672888",
+    "commentScore": 4.3,
+    "price": 312
+  },
+  {
+    "uid": "1788e45a405ccce9b25c6aa7",
+    "sid": "3b2629d6be78733fb2cc20c2",
+    "hotelName": "7天连锁酒店(南京长江大桥店)",
+    "hotelAddress": "南京市浦口区江山路6号（长江大桥下海德北岸售楼处旁边）",
+    "hotelPhone": "(025)68566077",
+    "commentScore": 4.2,
+    "price": 107
+  },
+  {
+    "uid": "bd5046e8b5021341d72ce2c1",
+    "sid": "a634273681fa4653ba3e970f",
+    "hotelName": "中航工业第一招待所",
+    "hotelAddress": "北京东四北大街汪芝麻胡同16号",
+    "hotelPhone": "(010)64015551",
+    "commentScore": 4.8,
+    "price": 173
+  },
+  {
+    "uid": "cb4fd14654beb8589c9d6881",
+    "sid": "7381f9374db66f54bc91ee25",
+    "hotelName": "泉州霞客酒店",
+    "hotelAddress": "环城北路272-273号西客站大楼内(近泉州西湖公园)",
+    "hotelPhone": "(0595)28178666",
+    "commentScore": 4.2,
+    "price": 136
+  },
+  {
+    "uid": "d575866960b83d75c2f1cf01",
+    "sid": "bb09be1a34e1c43404a652b6",
+    "hotelName": "佳泰连锁商务宾馆（丹东东港店）",
+    "hotelAddress": "东港路122号（东港财政局对面）",
+    "hotelPhone": "(0415)7555888",
+    "commentScore": 4.6,
+    "price": 85
+  },
+  {
+    "uid": "c0f9f0b510abb33732870a18",
+    "sid": "227d71ed2e699613cd17240b",
+    "hotelName": "植物园山庄",
+    "hotelAddress": "天水麦积山风景名胜区小陇山植物园山庄（离石窟直线100米）",
+    "hotelPhone": "(0938)2231025",
+    "commentScore": 3.9,
+    "price": 237
+  },
+  {
+    "uid": "beccb6447ca15d8c0e0e6bb9",
+    "sid": "c5fba40f9b9df6dff740300e",
+    "hotelName": "天津温馨酒店公寓",
+    "hotelAddress": "南开区南马路1588号如意大厦A座3321",
+    "hotelPhone": "022-87355310,15022266890",
+    "commentScore": 4.6,
+    "price": 89
+  },
+  {
+    "uid": "0dfed61ffad1553ad518b723",
+    "sid": "5388c005c401f1153f0f77b2",
+    "hotelName": "碧海快捷宾馆(富佳苑西南)",
+    "hotelAddress": "锡林浩特市贝子庙街109号（贝子庙东侧）",
+    "hotelPhone": "(0479)8226666",
+    "commentScore": 4.4,
+    "price": 100
+  },
+  {
+    "uid": "775a1c2108229d458e7727e7",
+    "sid": "9eb0eb381df41344144463fd",
+    "hotelName": "唯景酒店（震南路店）",
+    "hotelAddress": "吴江区震南路1358号（镇政府往西100米）",
+    "hotelPhone": "(0512)82856555",
+    "commentScore": 4.5,
+    "price": 91
+  },
+  {
+    "uid": "76f9c3048faaed3946e274d7",
+    "sid": "44310b158915309ea1716921",
+    "hotelName": "安吉章村笛燕饭店",
+    "hotelAddress": "安吉章村镇长潭村",
+    "hotelPhone": "(0572)5079883",
+    "commentScore": 4.6,
+    "price": 102
+  },
+  {
+    "uid": "ded3a936d7c0b692b64f54d5",
+    "sid": "824e4d001b3184b2b2b67fba",
+    "hotelName": "无锡葡丽斯商务宾馆",
+    "hotelAddress": "江苏无锡市新区 泰伯大道华夏太阳城香珺苑39-35号",
+    "hotelPhone": "(0510)83031777",
+    "commentScore": 4.4,
+    "price": 101
+  },
+  {
+    "uid": "b38f3985acfeb1cb90114c9c",
+    "sid": "a0ea80baae5f1d3a784091a5",
+    "hotelName": "曹溪温泉假日度假村",
+    "hotelAddress": "曲江区转溪桥(近华南寺)",
+    "hotelPhone": "(0751)6666666",
+    "commentScore": 3.8,
+    "price": 386
+  },
+  {
+    "uid": "cd9d05dd539b26b585420ede",
+    "sid": "74ebaa3f6703cc8575ed393e",
+    "hotelName": "瀛东渔家乐",
+    "hotelAddress": "崇明县瀛东村",
+    "hotelPhone": "(021)59436276",
+    "commentScore": 3.9,
+    "price": 325
+  },
+  {
+    "uid": "550fd5f9e4ff0804931fc9ee",
+    "sid": "a02893d83c0c3f154ff112cf",
+    "hotelName": "旅顺宾馆",
+    "hotelAddress": "大连市旅顺口区长江路1号",
+    "hotelPhone": "0411-86628333",
+    "commentScore": 3.6,
+    "price": 125
+  },
+  {
+    "uid": "beabdbf4979bcb817069d347",
+    "sid": "75d075a3a4c71261cb1fc319",
+    "hotelName": "上海紫京大酒店",
+    "hotelAddress": "寒山寺路88号",
+    "hotelPhone": "021-59616868",
+    "commentScore": 4.1,
+    "price": 138
+  },
+  {
+    "uid": "e3c0967f068207165cbe8611",
+    "sid": "ce091efa15d8330a2308b53e",
+    "hotelName": "览海棕榈酒店",
+    "hotelAddress": "宁波市镇海区沿江东路570号（紧邻镇海电视台新闻网络中心）",
+    "hotelPhone": "(0574)86316288",
+    "commentScore": 4,
+    "price": 129
+  },
+  {
+    "uid": "40d57889ebc3aba4fbdc8545",
+    "sid": "b3fd1261cb1fadacab24c1c9",
+    "hotelName": "肇庆鼎湖半岛明珠酒店",
+    "hotelAddress": "鼎湖区坑口万福路33号金盛豪苑综合楼（近福星街）",
+    "hotelPhone": "(0758)2669188",
+    "commentScore": 4.1,
+    "price": 186
+  },
+  {
+    "uid": "21ff2caa5a466f5f8505bf11",
+    "sid": "8eefbaf11bc6adc41efab6c0",
+    "hotelName": "天润泉宾馆",
+    "hotelAddress": "历下区佛山苑小区3区13号统一银座超市2楼",
+    "hotelPhone": "(0531)86011289",
+    "commentScore": 4.6,
+    "price": 80
+  },
+  {
+    "uid": "3e8d75464f597b03d3ff2307",
+    "sid": "55c23f0fd41f975780997224",
+    "hotelName": "青岛海尔国际培训中心宾馆",
+    "hotelAddress": "青岛市崂山区王哥庄镇港东",
+    "hotelPhone": "(0532)87912288",
+    "commentScore": 3.5,
+    "price": 198
+  },
+  {
+    "uid": "92b806d2957094fe79b55c17",
+    "sid": "23721cc84836d6f3c8212b39",
+    "hotelName": "白云温泉山庄",
+    "hotelAddress": "佛冈县汤塘黄花湖温泉旅游度假区内",
+    "hotelPhone": "13710594496",
+    "commentScore": 3,
+    "price": 81
+  },
+  {
+    "uid": "45082a1b7d01973cc06c14fa",
+    "sid": "ae09dfcc000b2975e4558726",
+    "hotelName": "翔家精品酒店",
+    "hotelAddress": "厦门市翔安区大嶝双沪二里17号（小木屋边）",
+    "hotelPhone": "(0592)7181565",
+    "commentScore": 3.7,
+    "price": 148
+  },
+  {
+    "uid": "82e6f689e3a3388ba6da39b0",
+    "sid": "db5404ec4c51e5187498c628",
+    "hotelName": "成都三巷一号自助旅舍",
+    "hotelAddress": "成都武侯区金雁路116号名流花园内3巷1号",
+    "hotelPhone": "(028)87711356",
+    "commentScore": 4.7,
+    "price": 80
+  },
+  {
+    "uid": "5c2dc21d9695ed1d6fc02c48",
+    "sid": "ca1556c0a53ec6adcd2f8d14",
+    "hotelName": "爱尊客酒店",
+    "hotelAddress": "市南区香港中路108号（与台湾路交汇处）",
+    "hotelPhone": "(0532)83090888,(0532)83090999",
+    "commentScore": 4.6,
+    "price": 258
+  },
+  {
+    "uid": "741cc8a1f995658204fef5dd",
+    "sid": "74a293d2d06f5707715ad237",
+    "hotelName": "五指山花园别墅度假酒店",
+    "hotelAddress": "五指山市山庄路（山庄路和河北沿河路的交叉口）",
+    "hotelPhone": "",
+    "commentScore": 4.4,
+    "price": 116
+  },
+  {
+    "uid": "fa1287bab4338b838a36ee51",
+    "sid": "33c8db000a5c91ca87271af7",
+    "hotelName": "普陀山海滨楼",
+    "hotelAddress": "浙江舟山普陀山龙湾村海滨楼31幢71号",
+    "hotelPhone": "13967207920",
+    "commentScore": 5,
+    "price": 152
+  },
+  {
+    "uid": "8d96925c1d2c945cc0f1cf95",
+    "sid": "abad14443489a744ec5b6e1a",
+    "hotelName": "爱依华酒店",
+    "hotelAddress": "江门市新会区会城镇冈州大道西6号（金沙广场旁）",
+    "hotelPhone": "(0750)6702222",
+    "commentScore": 3.7,
+    "price": 138
+  },
+  {
+    "uid": "6ef904ba003237fff33cba42",
+    "sid": "fe3bcf0ae6bc81baae5f93f6",
+    "hotelName": "商旅人宾馆",
+    "hotelAddress": "西湖区船山路711号（中山路与船山路交汇处）",
+    "hotelPhone": "(0791)86612111",
+    "commentScore": 4.5,
+    "price": 81
+  },
+  {
+    "uid": "3a8b1fe18cd37f4375e5b6b1",
+    "sid": "11241a1d89d2a0f44f474307",
+    "hotelName": "湖北咸宁楚天瑶池温泉酒店",
+    "hotelAddress": "咸宁温泉区温泉路3号（近温泉汽车站）",
+    "hotelPhone": "(0715)8900666",
+    "commentScore": 3.7,
+    "price": 159
+  },
+  {
+    "uid": "fd007c5e6e136575a9f729e0",
+    "sid": "5324dc24b39f09736a73a606",
+    "hotelName": "九寨天堂(九寨天堂洲际大饭店西)",
+    "hotelAddress": "阿坝州九寨沟县，301省道(近九寨天堂酒店)",
+    "hotelPhone": "(0837)7789999",
+    "commentScore": 4.5,
+    "price": 153
+  },
+  {
+    "uid": "424bc0fcfad74155220262c8",
+    "sid": "00287594baeb76b3690fbd1e",
+    "hotelName": "厦门鼓浪屿桂圆度假别墅",
+    "hotelAddress": "厦门思明区福建路19号",
+    "hotelPhone": "(0592)2081905",
+    "commentScore": 4.8,
+    "price": 228
+  },
+  {
+    "uid": "b15d9787a24428e07402693b",
+    "sid": "88f87ee4381b2120f8cc1efa",
+    "hotelName": "泸沽湖感觉小苑客栈",
+    "hotelAddress": "丽江市泸沽湖大落水码头",
+    "hotelPhone": "(0888)5825238",
+    "commentScore": 2.9,
+    "price": 313
+  },
+  {
+    "uid": "c4c0482527ccc4a1e407383c",
+    "sid": "7e235a52dec9c3f9db7dfef8",
+    "hotelName": "厦门芭乐家庭公寓",
+    "hotelAddress": "厦门市思明区兴华路29号镇海明珠大厦",
+    "hotelPhone": "(0592)8289299",
+    "commentScore": 4.8,
+    "price": 80
+  },
+  {
+    "uid": "9d60c4acbd7b072c2bd7abf8",
+    "sid": "1f02663ee7c8273681fae904",
+    "hotelName": "昆明春城人家客栈",
+    "hotelAddress": "昆明市博海路12号附7号",
+    "hotelPhone": "13078706615",
+    "commentScore": 3.9,
+    "price": 157
+  },
+  {
+    "uid": "9229eeb8d85bf2e0bfa82209",
+    "sid": "46ab1f4019c66b17a516aaa7",
+    "hotelName": "丽景时尚酒店",
+    "hotelAddress": "丽景北街与上海路交汇处南100米（北环批发市场）",
+    "hotelPhone": "(0951)3859333",
+    "commentScore": 4.4,
+    "price": 87
+  },
+  {
+    "uid": "0a15c7ec1ae457fced74f8d1",
+    "sid": "34446d0754c85f19f47778b2",
+    "hotelName": "友缘宾馆",
+    "hotelAddress": "火车站南30米",
+    "hotelPhone": "(0916)8160000",
+    "commentScore": 3.6,
+    "price": 81
+  },
+  {
+    "uid": "04e4bba480b30a4e43afe67b",
+    "sid": "0a2ba53ec6adcd2feedc8a18",
+    "hotelName": "沃森酒店",
+    "hotelAddress": "东莞长安镇沙头西大路135号（长安镇与振安中路交汇处）",
+    "hotelPhone": "(0769)81666618",
+    "commentScore": 4.5,
+    "price": 153
+  },
+  {
+    "uid": "daf393a5aecffb16095cb314",
+    "sid": "97d8db6e97289b7e6b22f90b",
+    "hotelName": "大理古城寻一处客栈",
+    "hotelAddress": "大理市古城西门214国道大纸房村3号(武庙会对面)",
+    "hotelPhone": "(0872)2380623",
+    "commentScore": 4.9,
+    "price": 80
+  },
+  {
+    "uid": "cbcac10d968b12c00bccddda",
+    "sid": "5093e32fd14cfbe30b156a3b",
+    "hotelName": "忆江南温泉谷酒店",
+    "hotelAddress": "鲅鱼圈熊岳植物园园内（近熊岳火车站）",
+    "hotelPhone": "(0417)6122222",
+    "commentScore": 4.7,
+    "price": 594
+  },
+  {
+    "uid": "f0fba881ae51fb71fda778ac",
+    "sid": "41311e4019c66b17a516aa3d",
+    "hotelName": "速8酒店（北京石景山八角店）",
+    "hotelAddress": "北京市石景山区鲁谷南路26号",
+    "hotelPhone": "(010)51713299",
+    "commentScore": 4.2,
+    "price": 128
+  },
+  {
+    "uid": "0c2559175ab3a5ae9c09f7b2",
+    "sid": "c955e59aba1c706693d2d787",
+    "hotelName": "德清莫干山塔岭山庄",
+    "hotelAddress": "德清县莫干山风景风区岗头路19号-22号(莫干山景区内)",
+    "hotelPhone": "(0572)8032188",
+    "commentScore": 4.5,
+    "price": 680
+  },
+  {
+    "uid": "d241788b5d0b7c36c51b757f",
+    "sid": "44180b158915309ea1716908",
+    "hotelName": "淄博聊斋大酒店",
+    "hotelAddress": "淄博市淄川区淄矿北路61号（淄川体育场北邻）",
+    "hotelPhone": "(0533)5280689",
+    "commentScore": 4.7,
+    "price": 117
+  },
+  {
+    "uid": "f9735df09f6b87a095f08c95",
+    "sid": "f8c6c6adcd2feedcbaf18b0b",
+    "hotelName": "雅轩青年旅舍",
+    "hotelAddress": "苏州市姑苏区十全街滚绣坊82号",
+    "hotelPhone": "13621577351",
+    "commentScore": 4.6,
+    "price": 80
+  },
+  {
+    "uid": "e2b7fd2eea4f1dacc909f092",
+    "sid": "1a8d762fcb8f04ec4c51d881",
+    "hotelName": "新都兰格商务酒店",
+    "hotelAddress": "成都市新都区马超西路290号（龙虎大厦四4楼）",
+    "hotelPhone": "(028)83921919",
+    "commentScore": 4.3,
+    "price": 91
+  },
+  {
+    "uid": "435d7aeaf883a92c5bbbbc84",
+    "sid": "10e1222e5d285f52dec9f0cb",
+    "hotelName": "通程宾馆",
+    "hotelAddress": "建设北路168号（湘潭市第一中学正对面）",
+    "hotelPhone": "(0731)58210333",
+    "commentScore": 4.6,
+    "price": 89
+  },
+  {
+    "uid": "49d57ef7e97fa89c38e4a648",
+    "sid": "84580266d60419efc7170db6",
+    "hotelName": "成都希顿酒店",
+    "hotelAddress": "四川成都高新区成都市高新区天府二街南华路1616号近世纪城会展中心（伊藤洋华堂旁）",
+    "hotelPhone": "(028)65100000",
+    "commentScore": 4.6,
+    "price": 202
+  },
+  {
+    "uid": "373cf7572aecea6e4254d7e2",
+    "sid": "60ed3dff1e4019c66b17ad0c",
+    "hotelName": "正君宾馆",
+    "hotelAddress": "北京大兴区西红门镇寿宝庄南马路2号大兴农业生态观光区",
+    "hotelPhone": "(010)61284250",
+    "commentScore": 4.6,
+    "price": 80
+  },
+  {
+    "uid": "a0b34a118e77a3256e3e1b10",
+    "sid": "60f13dff1e4019c66b17ad10",
+    "hotelName": "锦江之星酒店(长江西路店)",
+    "hotelAddress": "合肥高新区长江西路960号（长江西路与半岛路交叉口）",
+    "hotelPhone": "(0551)2275111",
+    "commentScore": 4.4,
+    "price": 148
+  }
+]
