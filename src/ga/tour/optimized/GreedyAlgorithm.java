@@ -51,7 +51,7 @@ public class GreedyAlgorithm {
 	public GreedyAlgorithm(double downDay, double maxDay, int scale, ArrayList<Scenery> sceneryList){
 		this.sceneryList = sceneryList;
 		this.scale = scale;
-		routesMap = new HashMap<>();
+		routesMap = new HashMap<String, Routes>();
 		initPopulation = new int[scale][sceneryList.size()];
 		
 		this.init();
@@ -122,7 +122,7 @@ public class GreedyAlgorithm {
 			routeList.add(model);
 		}
 		Collections.sort(routeList);
-		ArrayList<Routes> sortedList = new ArrayList<>();
+		ArrayList<Routes> sortedList = new ArrayList<Routes>();
 		if (routeList.size() > scale) {
 			for (int i = 0; i < scale; i++) {
 				sortedList.add(routeList.get(i));

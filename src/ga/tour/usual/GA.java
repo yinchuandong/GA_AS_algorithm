@@ -164,7 +164,7 @@ public class GA {
 	 * @param hotelMap 酒店的信息
 	 * @throws Exception 
 	 */
-	public void init(Scenery city, ArrayList<Scenery> sceneryList, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) throws Exception{
+	public void init(Scenery city, ArrayList<Scenery> sceneryList, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
 		this.city = city;
 		this.sceneryList = sceneryList;
 		this.minDay = minDay;
@@ -173,7 +173,7 @@ public class GA {
 		
 		this.sceneryNum = this.sceneryList.size();
 		if (sceneryNum < 2) {
-			throw new Exception("景点的个数为" + sceneryNum +"，不符合，其url为：" + city.getSurl());
+			throw new IllegalArgumentException("景点的个数为" + sceneryNum +"，不符合，其url为：" + city.getSurl());
 		}
 		
 		//select the max viewCount of all scenery
