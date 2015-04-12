@@ -27,8 +27,8 @@ public class ASMain {
 		long beginM = Runtime.getRuntime().totalMemory();
 //		ArrayList<Scenery> list = loadData("./guangzhou.txt");
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
-		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
+		Scenery city = SceneryUtil.getCityById("da666bc57594baeb76b3bcf0");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("da666bc57594baeb76b3bcf0");
 		
 		ACO aco = new ACO();
 		aco.init(city, sceneryList, hotelMap, 10, 2.0, 3.0);
@@ -54,8 +54,8 @@ public class ASMain {
 		System.out.println("begin");
 		
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
-		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
+		Scenery city = SceneryUtil.getCityById("da666bc57594baeb76b3bcf0");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("da666bc57594baeb76b3bcf0");
 		
 		int runGens = 10;
 		double avgTime = 0.0;

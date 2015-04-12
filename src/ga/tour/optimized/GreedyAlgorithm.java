@@ -80,7 +80,7 @@ public class GreedyAlgorithm {
 				for (int j = i; j < len; j += span) {
 					Scenery curScene = sceneryList.get(j);
 					tmpDays += curScene.getVisitDay();
-					distance = getDistance(lastScene, curScene);
+					distance = SceneryUtil.calcDistance(lastScene, curScene);
 					if (tmpDays > maxDay || distance > 200000.0) {
 						tmpDays -= curScene.getVisitDay();
 						continue;
@@ -167,21 +167,6 @@ public class GreedyAlgorithm {
 		
 	}
 	
-	/**
-	 * 计算欧式距离
-	 * @param s1
-	 * @param s2
-	 * @return
-	 */
-	public double getDistance(Scenery s1, Scenery s2){
-		double distance = 0.0;
-		double x1 = s1.getMapX();
-		double y1 = s1.getMapY();
-		double x2 = s2.getMapX();
-		double y2 = s2.getMapY();
-		distance = Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
-		return distance;
-	}
 	
 	/**
 	 * 获得初始化好的种群
@@ -271,7 +256,7 @@ public class GreedyAlgorithm {
 	}
 
 	public static void main(String[] args) throws IOException{
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("622bc401f1153f0fd41f74dd");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("622bc401f1153f0fd41f74dd");
 //		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
 		GreedyAlgorithm greedy = new GreedyAlgorithm(2.0, 3.0, 300, sceneryList);
 		int[][] population =  greedy.getInitPopulation();

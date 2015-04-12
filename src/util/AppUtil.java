@@ -111,9 +111,9 @@ public class AppUtil {
 		return strRet; 
 	}
 	
-	public static void exportFile(String dirPath, String pageContent){
+	public static void exportFile(File file, String pageContent){
 		try {
-			PrintWriter writer = new PrintWriter(new File(dirPath));
+			PrintWriter writer = new PrintWriter(file);
 			writer.write(pageContent);
 			writer.flush();
 			writer.close();

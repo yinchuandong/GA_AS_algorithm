@@ -157,14 +157,14 @@ public class ACO {
 						bestTour[j] = ants[i].getTour()[j];
 						tmpTour[j] = bestTour[j];
 						if (bestTour[j] != -1) {
-//							System.out.print(sceneList.get(bestTour[j])
-//									.getSname() + " ");
+							System.out.print(sceneList.get(bestTour[j])
+									.getSname() + " ");
 						}
 					}
 					antTourList.add(bestTour.clone());
 					hotnessList.add(bestLength);
 					
-//					System.out.println();
+					System.out.println();
 				}
 			}
 			// 更新信息素

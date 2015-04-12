@@ -68,11 +68,6 @@ public class MGGA {
 	private double[] pi;
 	
 	/**
-	 * 景点的最大热度
-	 */
-	private int maxViewCount;
-	
-	/**
 	 *  初始种群，父代种群，行数表示种群规模，一行代表一个个体，即染色体，列表示染色体基因片段
 	 */
 	private int[][] oldPopulation;
@@ -88,9 +83,9 @@ public class MGGA {
 	private double[] fitness;
 	
 	/**
-	 * 每一条路径对应的酒店的sid
+	 * 每条路线对应的酒店价格均价
 	 */
-	private String[] recommendHotel;
+	private double[] recommendHotelPrice;
 	
 	/**
 	 * 最佳出现代数
@@ -108,6 +103,8 @@ public class MGGA {
 	private int[] bestRoute;
 	
 	private String bestHotelIds;
+	
+	private ArrayList<EncodedRoute> globalBestRoute;
 	
 	/**
 	 * 随机数
@@ -153,6 +150,11 @@ public class MGGA {
 		this.sceneryList = new ArrayList<Scenery>();
 	}
 	
+	public class EncodedRoute{
+		public int[] chromosome;
+		public double hotelPrice;
+		public double fitness;
+	}
 
 	/**
 	 * 生成一个0-65535之间的随机数
@@ -182,17 +184,6 @@ public class MGGA {
 			throw new IllegalArgumentException("景点的个数为" + sceneryNum +"，不符合，其url为：" + city.getSurl());
 		}
 		
-		//select the max viewCount of all scenery
-		this.maxViewCount = sceneryList.get(0).getViewCount();
-		for (int i = 0; i < sceneryNum; i++) {
-			int tmpCount = sceneryList.get(i).getViewCount();
-			if(this.maxViewCount < tmpCount){
-				this.maxViewCount = tmpCount;
-			}
-		}
-		// maxViewCount multiply the max scenery number in a route
-		this.maxViewCount *= 20;
-		
 		this.bestLen = Integer.MIN_VALUE;
 		this.bestGen = 0;
 		this.bestRoute = new int[sceneryNum];
@@ -204,7 +195,8 @@ public class MGGA {
 		this.fitness = new double[scale];
 		this.pi = new double[scale];
 		
-		this.recommendHotel = new String[scale];
+		this.recommendHotelPrice = new double[scale];
+		this.globalBestRoute = new ArrayList<EncodedRoute>();
 		
 		this.random = new Random(System.currentTimeMillis());
 	}
@@ -219,6 +211,28 @@ public class MGGA {
 	}
 	
 	/**
+	 * check if the distance of 2 stochastic scene is valid   
+	 * @param index
+	 * @param chromosome
+	 */
+	private void checkDistance(int index, int[] chromosome){
+		Scenery lastScene = null;
+		for (int i = 0; i < chromosome.length; i++) {
+			if (chromosome[i] != 1) {
+				continue;
+			}
+			Scenery scene = sceneryList.get(i);
+			if(lastScene != null){
+				double distance = SceneryUtil.calcDistance(scene, lastScene);
+				if(distance > 200000.0){
+					chromosome[i] = 0;
+				}
+			}
+			lastScene = scene;
+		}
+	}
+	
+	/**
 	 * 评价函数，用于计算适度
 	 * @param index 当前染色体的下标
 	 * @param chromosome 染色体，包含：城市1,城市2...城市n
@@ -228,16 +242,19 @@ public class MGGA {
 		double ticketPrice = 0.0;//门票
 		double hotness = 0.0;//热度
 		double days = 0.0;
+		
+		//检测景点间的距离
+		this.checkDistance(index, chromosome);
+		
 		//酒店当前染色体对应的酒店信息
 		ArrayList<Hotel> curHotels = new ArrayList<Hotel>();
-		
 		for (int i = 0; i < chromosome.length; i++) {
 			if (chromosome[i] != 1) {
 				continue;
 			}
 			Scenery scene = sceneryList.get(i);
 			if (days + scene.getVisitDay() > maxDay) {
-				//if current visitDays larger than maxDay, give up this scenery
+				//if current visitDays larger than maxDay, remove this scenery
 				chromosome[i] = 0;
 				continue;
 			}
@@ -252,48 +269,29 @@ public class MGGA {
 		}
 		
 		if (days <= minDay || days > maxDay) {
-			recommendHotel[index] = "";
 			return 0;
 		}
 		
-		Collections.sort(curHotels);
+		//计算该路线酒店的花费, cost = avg_cost * (maxDay - 1)
 		double hotelPrice = 0.0;
-		/* 判断酒店的个数是否大于需要入住的天数
-		 * 如果大于则按照入住的天数计算价格
-		 * 如果小于则计算所有酒店的价格，剩余天数就按照最低价格计算
-		 */
-		String hotelIds = "";//保存推荐的hotelId
-		int len = Math.min(curHotels.size(), (int)minDay);
-		if (len != 0) {
-			for (int i = 0; i < len; i++) {
-				hotelPrice += curHotels.get(i).getPrice();
-				hotelIds += curHotels.get(i).getSid() + ",";
+		if(curHotels.size() != 0){
+			for (Hotel hotel : curHotels) {
+				hotelPrice += hotel.getPrice();
 			}
-			int span = (int)(minDay - curHotels.size());
-			for (int i = 0; i < span; i++) {
-				hotelPrice += curHotels.get(0).getPrice();
-				hotelIds += curHotels.get(0).getSid() + ",";
-			}
+			hotelPrice = (hotelPrice / curHotels.size()) * (maxDay - 1);
 		}else{
-			//当该景点没有酒店的时候，默认80块
-			for (int i = 0; i < (int)minDay; i++) {
-				hotelPrice += 80.0;
-			}
+			//如果游玩天数为1天，则不推荐酒店
+			hotelPrice = (maxDay > 1.0) ? (80.0 * (maxDay - 1)) : 0;
 		}
-		
-		if (!hotelIds.equals("")) {
-			hotelIds = hotelIds.substring(0, hotelIds.length() - 1);
-		}
-		recommendHotel[index] = hotelIds;
-		
+		recommendHotelPrice[index] = hotelPrice;
+
+		//计算适度
 		double price = hotelPrice + ticketPrice;
 		double fitness =  0.0;
 		double rho = 0.9;
-//		double fx = (1.0 - rho) * Math.pow(1.0 / (10.0 + price), 1.0);
-//		double gx = rho * Math.pow(1.0 / (10.0 + this.maxViewCount - hotness), 1.0 / 3.0);
 		
 		double fx = (1 - rho)*(10000.0 / (price + 10.0));
-		double gx =  rho * Math.pow(hotness, 1.0/3.0);
+		double gx =  Math.pow(hotness, 1.0/3.0);
 		fitness = fx + gx;
 //		System.out.println("fiteness: price=" + fx + "  hotness=" + gx );
 		return fitness;
@@ -348,19 +346,28 @@ public class MGGA {
 		if (bestLen < maxFitness) {
 			bestLen = maxFitness;
 			bestGen = curGen;
+			
+			//recode the local best route;
+//			recodeLocalBest(maxId);
+			int[] tmpChromo = new int[sceneryNum];
 			for (int i = 0; i < sceneryNum; i++) {
 				bestRoute[i] = oldPopulation[maxId][i];
+				tmpChromo[i] = bestRoute[i];
 			}
+			EncodedRoute tmpRoute = new EncodedRoute();
+			tmpRoute.chromosome = tmpChromo;
+			tmpRoute.fitness = fitness[maxId];
+			tmpRoute.hotelPrice = recommendHotelPrice[maxId];
+			this.globalBestRoute.add(tmpRoute);
 		}
-		//save the best hotel
-		bestHotelIds = recommendHotel[maxId];
+		
 		// copy the best chromosome into new population and put on the first of population
 		this.copyChromosome(0, maxId);
 		
-		this.greedyAgm.optimize(oldPopulation[minId]);
-//		for (Integer id : minIdList) {
-//			this.greedyAgm.optimize(oldPopulation[id]);
-//		}
+//		this.greedyAgm.optimize(oldPopulation[minId]);
+		for (Integer id : minIdList) {
+			this.greedyAgm.optimize(oldPopulation[id]);
+		}
 	}
 	
 	/**
@@ -470,7 +477,7 @@ public class MGGA {
 	/**
 	 * 解决问题
 	 */
-	public ArrayList<Route> run(){
+	public void run(){
 		//初始化种群
 		initGroup();
 		//计算初始适度
@@ -506,135 +513,15 @@ public class MGGA {
 		//select the best and worst generation
 		selectBestAndWorst();
 		
-		ArrayList<Route> routeList = decodeChromosome();
-		return routeList;
 	}
 	
 	/**
-	 * decode the chromosome and transform into route model 
+	 * 返回未解码的路线
 	 * @return
 	 */
-	private ArrayList<Route> decodeChromosome(){
-		System.out.println("gasecnery 最后种群");
-		HashMap<String, Integer> routeMap = new HashMap<String, Integer>();
-		ArrayList<Route> routeList = new ArrayList<Route>();
-		//获得城市对象
-		for (int i = 0; i < scale; i++) {
-			double ticketPrice = 0.0;
-			double hotness = fitness[i];
-			double days = 0.0;
-			int viewCount = 0;
-			String tmpR = "";
-			Route route = new Route();
-			//获得景点列表
-			ArrayList<Scenery> sList = new ArrayList<Scenery>();
-			for (int j = 0; j < sceneryNum; j++) {
-				if (oldPopulation[i][j] == 1) {
-					Scenery scene = sceneryList.get(j);
-					ticketPrice += scene.getPrice();
-					viewCount += scene.getViewCount();
-					days += scene.getVisitDay();
-					tmpR += scene.getSid();
-					sList.add(scene);
-//					System.out.print(scene.getSname() + ",");
-				}
-			}
-			
-			//ensure the visitDays is between minDay and maxDay
-			if (days <= minDay || days > maxDay) {
-				continue;
-			}
-			
-			String uid = AppUtil.md5(tmpR + this.maxDay);
-			String sid = city.getSid();
-			String ambiguitySname = city.getAmbiguitySname();
-			String sname = city.getSname();
-			String surl = city.getSurl();
-			
-			route.setUid(uid);
-			route.setSid(sid);
-			route.setAmbiguitySname(ambiguitySname);
-			route.setSname(sname);
-			route.setSurl(surl);
-			route.setMaxDay(maxDay);
-			route.setMinDay(minDay);
-			route.setVisitDay(days);
-			route.setHotness(hotness);
-			route.setViewCount(viewCount);
-			route.setSceneTicket(ticketPrice);
-			route.setSceneryList(sList);
-			if (!routeMap.containsKey(uid) && sList.size() >= 2) {
-				routeMap.put(uid, 1);
-				routeList.add(route);
-			}
-//			System.out.print("  天数：" + days + " --价格：" + sceneTicket + " --热度:" + hotness);
-//			System.out.print(" 适度：" + fitness[i] + " 酒店：" + recommendHotel[i]);
-//			System.out.println();
-		}
-		
-		//sort the routeList
-		Collections.sort(routeList, new Comparator<Route>() {
-
-			@Override
-			public int compare(Route o1, Route o2) {
-				if(o1.getHotness() < o2.getHotness()){
-					return 1;
-				}else{
-					return -1;
-				}
-			}
-		});
-		
-		//------------------------------------
-
-		
-//		for (int i = 0; i < routeList.size(); i++) {
-//			Route route = routeList.get(i);
-//			ArrayList<Scenery> sceneList = route.getSceneryList();
-//			for (Scenery scenery : sceneList) {
-//				System.out.print(scenery.getSname() + ",");
-//			}
-//			System.out.println();
-//			if(i >= 20){
-//				break;
-//			}
-//		}
-		
-		return routeList;
+	public ArrayList<EncodedRoute> getEndecodedRoute(){
+		return this.globalBestRoute;
 	}
-	
-	
-	public void reportResult(){
-		System.out.println("------------------------------");
-		System.out.println("最佳长度出现代数：" + bestGen);
-		System.out.println("最佳长度" + bestLen);
-		System.out.println("最佳酒店：" + bestHotelIds);
-//		System.out.println("最佳路径：");
-//		for (int i = 0; i < sceneryNum; i++) {
-//			System.out.print(bestRoute[i] + ",");
-//		}
-//		System.out.println();
-		double price = 0.0;
-		double hotness = 0.0;
-		double days = 0.0;
-		for (int i = 0; i < sceneryNum; i++) {
-			if (bestRoute[i] == 1) {
-				Scenery scene = sceneryList.get(i);
-				price += scene.getPrice();
-				hotness += scene.getViewCount();
-				days += scene.getVisitDay();
-				System.out.print(scene.getSname() + ",");
-			}
-		}
-		System.out.println();
-		System.out.println("景点花费：" + price +" 元");
-	}
-	
-	
-	
-	
-	
-	
 	
 
 }

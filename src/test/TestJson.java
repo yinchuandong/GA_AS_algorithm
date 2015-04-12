@@ -26,7 +26,7 @@ public class TestJson {
 	}
 	
 	public static void exportScenery(String filepath){
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("da666bc57594baeb76b3bcf0");
 		JSONArray jsonArr = JSONArray.fromObject("[]");
 		for (Scenery scene : sceneryList) {
 			JSONObject obj = JSONObject.fromObject("{}");

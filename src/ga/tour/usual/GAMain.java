@@ -26,8 +26,8 @@ public class GAMain {
 		long beginM = Runtime.getRuntime().freeMemory();
 		
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
-		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
+		Scenery city = SceneryUtil.getCityById("da666bc57594baeb76b3bcf0");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("da666bc57594baeb76b3bcf0");
 		//sort all the scenery according to viewCount
 //		Collections.sort(sceneryList);
 //		Collections.reverse(sceneryList);
@@ -52,8 +52,8 @@ public class GAMain {
 		System.out.println("begin");
 		
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
-		Scenery city = SceneryUtil.getCity("da666bc57594baeb76b3bcf0");
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryList("da666bc57594baeb76b3bcf0");
+		Scenery city = SceneryUtil.getCityById("da666bc57594baeb76b3bcf0");
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById("da666bc57594baeb76b3bcf0");
 		
 		int runGens = 10;
 		double avgTime = 0.0;

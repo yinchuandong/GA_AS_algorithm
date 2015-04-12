@@ -57,7 +57,7 @@ public class SceneryUtil {
 		if (dayStr.contains("半天")) {
 			return 0.5;
 		}
-		if (dayStr.contains("一天")) {
+		if (dayStr.contains("一天") | dayStr.contains("全天")) {
 			return 1.0;
 		}
 		if (dayStr.contains("两天")) {
@@ -76,7 +76,7 @@ public class SceneryUtil {
 		if(matcher.find()){
 			String result = matcher.group(1);
 //			System.out.println(result);
-			return Double.parseDouble(result)*2 / dayHours;
+			return Double.parseDouble(result) / dayHours;
 		}
 		
 		//匹配分钟
@@ -84,7 +84,7 @@ public class SceneryUtil {
 		matcher = pattern.matcher(dayStr);
 		if (matcher.find()) {
 			String result = matcher.group(1);
-			double day = Double.parseDouble(result)*4 / (60.0 * dayHours);
+			double day = Double.parseDouble(result) / (60.0 * dayHours);
 //			System.out.println(result + "-" + day);
 			return day;
 		}
@@ -133,70 +133,7 @@ public class SceneryUtil {
 	 * @param cityId 城市的sid
 	 * @return
 	 */
-	public static HashMap<String, Scenery> getSceneryMap(String cityId){
-		HashMap<String, Scenery> result = new HashMap<String, Scenery>();
-		
-		LinkedList<String> waitList = new LinkedList<String>();
-		waitList.add(cityId);
-		try {
-			while(!waitList.isEmpty()){
-				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,s.more_desc,s.full_url FROM t_scenery as s WHERE s.parent_sid=?";
-				String[] params = {waitList.poll()};
-				ResultSet set = DbUtil.executeQuery(sql, params);
-				while(set.next()){
-					int sceneLayer = set.getInt("scene_layer");
-					String sid = set.getString("sid");
-					String surl = set.getString("surl");
-					String sname = set.getString("sname");
-					String ambiguitySname = set.getString("ambiguity_sname");
-					String moreDesc = set.getString("more_desc");
-					String fullUrl = set.getString("full_url");
-					int viewCount = set.getInt("view_count");
-					double lng = set.getDouble("lng");
-					double lat = set.getDouble("lat");
-					double mapX = set.getDouble("map_x");
-					double mapY = set.getDouble("map_y");
-					double price = parsePrice(set.getString("price_desc"));
-					double visitDay = getVisitDays(set.getString("recommend_visit_time"));
-					
-					if (sceneLayer == 6) {
-						Scenery scenery = new Scenery();
-						scenery.setSid(sid);
-						scenery.setSurl(surl);
-						scenery.setSname(sname);
-						scenery.setAmbiguitySname(ambiguitySname);
-						scenery.setMoreDesc(moreDesc);
-						scenery.setFullUrl(fullUrl);
-						scenery.setViewCount(viewCount);
-						scenery.setLng(lng);
-						scenery.setLat(lat);
-						scenery.setMapX(mapX);
-						scenery.setMapY(mapY);
-						scenery.setPrice(price);
-						scenery.setVisitDay(visitDay);
-//						System.out.println(sname+":"+price);
-						result.put(sid, scenery);
-					}else{
-						waitList.offer(sid);
-//						System.err.println(sname+":加入队列");
-					}
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
-			DbUtil.close();
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * 获得该城市下的所有景点
-	 * @param cityId 城市的sid
-	 * @return
-	 */
-	public static ArrayList<Scenery> getSceneryList(String cityId){
+	public static ArrayList<Scenery> getSceneryListById(String cityId){
 		ArrayList<Scenery> sceneryList = new ArrayList<Scenery>();
 		LinkedList<String> waitList = new LinkedList<String>();
 		waitList.add(cityId);
@@ -257,7 +194,7 @@ public class SceneryUtil {
 	 * @param psid
 	 * @return
 	 */
-	public static Scenery getCity(String psid){
+	public static Scenery getCityById(String psid){
 		Scenery scenery = new Scenery();
 		try {
 			String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y FROM t_scenery as s WHERE s.sid=?";
@@ -374,7 +311,7 @@ public class SceneryUtil {
 	public static void exportToText(){
 		try {
 			PrintWriter writer = new PrintWriter(new File("guangzhou.txt"));
-			ArrayList<Scenery> list = getSceneryList("da666bc57594baeb76b3bcf0");
+			ArrayList<Scenery> list = getSceneryListById("da666bc57594baeb76b3bcf0");
 			for (Scenery scenery : list) {
 				String str = "";
 				str += scenery.getSid() + ",";
@@ -420,6 +357,7 @@ public class SceneryUtil {
 //		getSceneryMap("da666bc57594baeb76b3bcf0");
 //		getCity("da666bc57594baeb76b3bcf0");
 //		parsePrice("");
+		System.out.println(getVisitDays("60分钟"));
 		long end = System.currentTimeMillis();
 		long delay = end - begin;
 		System.out.println("耗时：" + delay + "ms");
