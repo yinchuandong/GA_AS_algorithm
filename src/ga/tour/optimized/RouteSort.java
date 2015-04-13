@@ -115,7 +115,7 @@ public class RouteSort {
 	 * @param filename
 	 * @throws Exception 
 	 */
-	public void init(ArrayList<Scenery> cityList) throws Exception{
+	public void init(ArrayList<Scenery> cityList){
 		this.cityList = cityList;
 		ArrayList<Double> x = new ArrayList<Double>();
 		ArrayList<Double> y = new ArrayList<Double>();
@@ -126,7 +126,7 @@ public class RouteSort {
 		
 		this.cityNum = this.cityList.size();
 		if (this.cityNum < 2) {
-			throw new Exception("gasort cityNum 不能为小于2");
+			throw new IllegalArgumentException("gasort cityNum 不能为小于2");
 		}
 		this.distance = new double[cityNum][cityNum];
 		

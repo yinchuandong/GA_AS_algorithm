@@ -50,10 +50,11 @@ public class DbUtil {
 	 * @return
 	 */
 	public static Connection getConnection(){
-		if (conn != null) {
-			return conn;
-		}
 		try {
+			if (conn != null && !conn.isClosed()) {
+				return conn;
+			}
+			
 			com.mysql.jdbc.Driver jdbcDriver = new com.mysql.jdbc.Driver();
 			DriverManager.registerDriver(jdbcDriver);
 			

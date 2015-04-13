@@ -3,11 +3,16 @@ package ga.tour.optimized;
 import ga.tour.optimized.MGGA;
 import ga.tour.optimized.MGGA.EncodedRoute;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -15,19 +20,66 @@ import model.Hotel;
 import model.Route;
 import model.Scenery;
 import util.HotelUtil;
-import util.RouteUtil;
 import util.SceneryUtil;
 import util.AppUtil;
 
 public class MGGAMain {
 	
+	private static int globalIndex = 1;
+	private static ExecutorService taskPool = Executors.newCachedThreadPool();
 
+	/**
+	 * 程序入口
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception{
+		new MGGAMain().run();
+	}
+	
+	private void run() throws Exception{
 		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
 		double minDay = 2.0;
 		double maxDay = 3.0;
-		calcCity("da666bc57594baeb76b3bcf0", hotelMap, minDay, maxDay);
+		
+		BufferedReader reader = new BufferedReader(new FileReader(new File("./city_id.txt")));
+		String cityId = null;
+		int i = 1;
+		while((cityId = reader.readLine()) != null){
+			try {
+				taskPool.execute(new RouteThread(i, cityId, hotelMap, minDay, maxDay));
+				i++;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		reader.close();
 	}
+	
+	private class RouteThread implements Runnable{
+		private int index;
+		private String cityId;
+		private HashMap<String, Hotel> hotelMap;
+		private double minDay;
+		private double maxDay;
+		
+		public RouteThread(int index, String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) {
+			this.index = index;
+			this.cityId = cityId;
+			this.hotelMap = hotelMap;
+			this.minDay = minDay;
+			this.maxDay = maxDay;
+		}
+		
+		@Override
+		public void run() {
+			calcCity(cityId, hotelMap, minDay, maxDay);
+			System.out.println("处理完第：" + globalIndex + "-" + index +"个城市-->");
+			globalIndex ++;
+		}
+		
+	}
+	
 	
 	/**
 	 * 计算一个城市
@@ -37,12 +89,11 @@ public class MGGAMain {
 	 * @param maxDay
 	 * @throws Exception
 	 */
-	public static void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) throws Exception{
-		System.out.println("begin");
+	public static void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
 		long beginT = System.currentTimeMillis();
-		
-		
 		Scenery city = SceneryUtil.getCityById(cityId);
+		System.out.println("begin: url=" + city.getSurl() + " name=" + city.getSname());
+		
 		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById(cityId);
 		Runtime.getRuntime().gc();
 		long beginM = Runtime.getRuntime().totalMemory();
@@ -65,7 +116,7 @@ public class MGGAMain {
 //		decoder.filterRoute(0.7);
 //		routeList = decoder.decodeChromosome();
 		
-		decoder.report(routeList);
+//		decoder.report(routeList);
 		
 		//step3:对游玩景点进行排序
 		RouteSort sort = new RouteSort(30, 100, 0.8, 0.9);
@@ -78,18 +129,12 @@ public class MGGAMain {
 		
 		decoder.report(routeList);
 		
-		saveRoutes(routeList, "./routes");
-		
-		System.out.println("-----split-------");
-		int subLen = routeList.size();
-		subLen = subLen > 20 ? 20 : subLen - 1;
-		
-		List<Route> topNList = routeList.subList(0, subLen);
-		double hotness = RouteUtil.caclAvgHotness(topNList);
+		//step4:对路线进行安排，并且保存到本地json
+		saveRoutes(routeList, "./routes/" + city.getSurl());
 		
 		long tmpDelay = System.currentTimeMillis() - beginT;
 		long tmpMem = (beginM - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-		System.out.println("热度：" + hotness + "  耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
+		System.out.println(" 耗时：" + tmpDelay + "ms  内存：" + tmpMem + "M");
 	}
 
 	
@@ -98,7 +143,7 @@ public class MGGAMain {
 	 * @param routeList
 	 * @param dirPath
 	 */
-	public static void saveRoutes(ArrayList<Route> routeList, String dirPath){
+	private static void saveRoutes(ArrayList<Route> routeList, String dirPath){
 		for (int i = 0; i < routeList.size(); i++) {
 			Route route  = routeList.get(i);
 			JSONObject rootObj = JSONObject.fromObject(route);

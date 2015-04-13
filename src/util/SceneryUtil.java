@@ -184,7 +184,7 @@ public class SceneryUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
-			DbUtil.close();
+//			DbUtil.close();
 		}
 		return sceneryList;
 	}
@@ -225,7 +225,7 @@ public class SceneryUtil {
 			scenery = null;
 			e.printStackTrace();
 		} finally{
-			DbUtil.close();
+//			DbUtil.close();
 		}
 		return scenery;
 	}
