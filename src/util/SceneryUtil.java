@@ -230,64 +230,6 @@ public class SceneryUtil {
 		return scenery;
 	}
 	
-	/**
-	 * 将计算结果保存到文件夹中
-	 * @param routeList
-	 * @param dirPath
-	 */
-	public static void saveRoutes(ArrayList<Route> routeList, String dirPath){
-//		File dir = new File(dirPath);
-//		if (!dir.exists()) {
-//			dir.mkdirs();
-//		}
-//		for (int i = 0; i < routeList.size(); i++) {
-//			Route route  = routeList.get(i);
-//			JSONObject rootObj = JSONObject.fromObject(route);
-//			//
-//			rootObj.put("arrange", arrangeRoute(route.getSceneryList(), route.getMaxDay()));
-//			JSONArray sceneArr = rootObj.getJSONArray("sceneryList");
-//			for (int j = 0; j < sceneArr.size(); j++) {
-//				JSONObject sceneObj = sceneArr.getJSONObject(j);
-//				sceneObj.put("recommendHotel", HotelUtil.getSceneHotel(sceneObj.getString("sid")));
-//			}
-//			String filename = (int)route.getMaxDay() + "_" + i +"_" + route.getUid() + ".json";
-//			AppUtil.exportFile(dirPath + "\\" + filename, rootObj.toString());
-//			System.out.println(rootObj.toString());
-//					
-//		}
-	}
-	/**
-	 * 获得整个路程的安排，将整个路程切分为按天计算
-	 * @param sceneList
-	 * @param upDay 几天游
-	 */
-	private static JSONArray arrangeRoute(ArrayList<Scenery> sceneList, double upDay){
-		JSONArray allDaysArr = JSONArray.fromObject("[]");
-//		double tmpDays = 0.0;
-//		int curDay = 1;
-//		ArrayList<Scenery> tmpList = new ArrayList<Scenery>();
-//		for (Scenery scenery : sceneList) {
-//			tmpDays += scenery.getVisitDay();
-//			tmpList.add(scenery);
-//			if (tmpDays >= 1.0 || upDay <= 1.0) {
-//				tmpDays -= 1.0;
-//				JSONObject daysObj = JSONObject.fromObject("{}");
-//				JSONArray daysArr = JSONArray.fromObject(tmpList);
-//				daysObj.put("list", daysArr);
-//				daysObj.put("hotel", HotelUtil.getSceneHotel(scenery.getSid()));
-//				daysObj.put("curDay", "第" + curDay + "天");
-//				allDaysArr.add(daysObj);
-//				
-//				tmpList.clear();
-//				curDay ++;
-//				//一天玩不完，第二天继续玩
-//				if (tmpDays >= 0.3) {
-//					tmpList.add(scenery);
-//				}
-//			}
-//		}
-		return allDaysArr;
-	}
 	
 	/**
 	 * 计算欧式距离
