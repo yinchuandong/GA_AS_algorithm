@@ -111,6 +111,15 @@ public class AppUtil {
 		return strRet; 
 	}
 	
+	/**
+	 * 将\\\\u转为\\u
+	 * @param jsonStr
+	 * @return
+	 */
+	public static String formatUnicodeJson(String jsonStr){
+		return jsonStr.replaceAll("\\\\u", "\\u");
+	}
+	
 	public static void exportFile(File file, String pageContent){
 		try {
 			PrintWriter writer = new PrintWriter(file);

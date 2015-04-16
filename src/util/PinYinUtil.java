@@ -29,7 +29,8 @@ public class PinYinUtil {
 				pinyinName += nameChar[i];
 			}
 		}
-		return pinyinName;
+		//拼音中的nu:->nv
+		return pinyinName.replaceAll("u:", "v");
 	}
 
 	public static void main(String[] args) {
