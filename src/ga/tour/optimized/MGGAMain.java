@@ -27,7 +27,12 @@ public class MGGAMain {
 	
 	private static int globalIndex = 1;
 	private static ExecutorService taskPool = Executors.newCachedThreadPool();
+	private HashMap<String, Hotel> hotelMap = null;
 
+	public MGGAMain(){
+		hotelMap = HotelUtil.getAllHotel();
+	}
+	
 	/**
 	 * 程序入口
 	 * @param args
@@ -38,7 +43,6 @@ public class MGGAMain {
 	}
 	
 	private void run() throws Exception{
-		HashMap<String, Hotel> hotelMap = HotelUtil.getAllHotel();
 		double minDay = 2.0;
 		double maxDay = 3.0;
 		
@@ -89,7 +93,7 @@ public class MGGAMain {
 	 * @param maxDay
 	 * @throws Exception
 	 */
-	public static void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
+	public void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
 		long beginT = System.currentTimeMillis();
 		Scenery city = SceneryUtil.getCityById(cityId);
 		System.out.println("begin: url=" + city.getSurl() + " name=" + city.getSname());
@@ -143,7 +147,7 @@ public class MGGAMain {
 	 * @param routeList
 	 * @param dirPath
 	 */
-	private static void saveRoutes(ArrayList<Route> routeList, String dirPath){
+	private void saveRoutes(ArrayList<Route> routeList, String dirPath){
 		for (int i = 0; i < routeList.size(); i++) {
 			Route route  = routeList.get(i);
 			JSONObject rootObj = JSONObject.fromObject(route);
@@ -163,7 +167,7 @@ public class MGGAMain {
 	 * @param sceneList
 	 * @param maxDay 几天游
 	 */
-	private static JSONArray arrangeRoute(ArrayList<Scenery> sceneList, double maxDay){
+	private  JSONArray arrangeRoute(ArrayList<Scenery> sceneList, double maxDay){
 		JSONArray allDaysArr = JSONArray.fromObject("[]");
 		double tmpDays = 0.0;
 		int curDay = 1;
@@ -172,20 +176,46 @@ public class MGGAMain {
 			tmpDays += scenery.getVisitDay();
 			tmpList.add(scenery);
 			if (tmpDays >= 1.0 || maxDay <= 1.0) {
-				tmpDays -= 1.0;
+				//超出的时间小于1.25天，则把改景点加入当天游玩路线；否则，加入第二天规划
+				if(tmpDays > 1.25){
+					tmpList.remove(tmpList.size() - 1);
+				}
 				JSONObject daysObj = JSONObject.fromObject("{}");
 				JSONArray daysArr = JSONArray.fromObject(tmpList);
 				daysObj.put("list", daysArr);
 				daysObj.put("curDay", "第" + curDay + "天");
+				if(hotelMap.containsKey(scenery.getSid())){
+					Hotel hotel = hotelMap.get(scenery.getSid());
+					daysObj.put("hotel", hotel);
+				}else{
+					daysObj.put("hotel", "-1");
+				}
 				allDaysArr.add(daysObj);
 				
-				tmpList.clear();
-				curDay ++;
 				//一天玩不完，第二天继续玩
-				if (tmpDays >= 0.3) {
+				tmpList.clear();
+				if (tmpDays > 1.25) {
 					tmpList.add(scenery);
 				}
+				curDay ++;
+				tmpDays -= 1.0;
+
 			}
+		}
+		//解决visitDay < maxDay的情况，如2.75天
+		if(!tmpList.isEmpty()){
+			Scenery scenery = sceneList.get(sceneList.size()-1);
+			JSONObject daysObj = JSONObject.fromObject("{}");
+			JSONArray daysArr = JSONArray.fromObject(tmpList);
+			daysObj.put("list", daysArr);
+			daysObj.put("curDay", "第" + curDay + "天");
+			if(hotelMap.containsKey(scenery.getSid())){
+				Hotel hotel = hotelMap.get(scenery.getSid());
+				daysObj.put("hotel", hotel);
+			}else{
+				daysObj.put("hotel", "-1");
+			}
+			allDaysArr.add(daysObj);
 		}
 		return allDaysArr;
 	}
