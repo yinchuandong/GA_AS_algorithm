@@ -176,7 +176,7 @@ public class DbUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			close(null, statement, conn);
+//			close(null, statement, conn);
 		}
 		return result;
 	}

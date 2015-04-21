@@ -115,6 +115,8 @@ public class RouteDecoder {
 					sceneList.add(scene);
 				}
 			}
+			//viewcount为所有景点的平均值
+			viewCount = viewCount / sceneList.size(); 
 			
 			//ensure the visitDays is between minDay and maxDay
 			if (days <= minDay || days > maxDay) {
@@ -160,9 +162,6 @@ public class RouteDecoder {
 				}
 			}
 		});
-		
-		//------------------------------------
-
 		
 		return routeList;
 	}

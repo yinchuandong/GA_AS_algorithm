@@ -139,7 +139,7 @@ public class SceneryUtil {
 		waitList.add(cityId);
 		try {
 			while(!waitList.isEmpty()){
-				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,img.full_url FROM t_scenery as s, t_scenery_img as img WHERE img.sid=s.sid and s.parent_sid=?";
+				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,img.full_url,d.more_desc FROM t_scenery as s, t_scenery_img as img, t_scenery_des as d WHERE img.sid=s.sid and d.sid=s.sid and s.parent_sid=?";
 				String[] params = {waitList.poll()};
 				ResultSet set = DbUtil.executeQuery(sql, params);
 				while(set.next()){
@@ -148,7 +148,12 @@ public class SceneryUtil {
 					String surl = set.getString("surl");
 					String sname = set.getString("sname");
 					String ambiguitySname = set.getString("ambiguity_sname");
-//					String moreDesc = set.getString("more_desc");
+					String moreDesc = set.getString("more_desc");
+					int charId = moreDesc.indexOf("。", 100);
+					if(charId != -1){
+						//截取一部分desc描述
+						moreDesc = moreDesc.substring(0, charId+1);
+					}
 					String fullUrl = set.getString("full_url");
 					int viewCount = set.getInt("view_count");
 					double lng = set.getDouble("lng");
@@ -164,7 +169,7 @@ public class SceneryUtil {
 						scenery.setSurl(surl);
 						scenery.setSname(sname);
 						scenery.setAmbiguitySname(ambiguitySname);
-//						scenery.setMoreDesc(moreDesc);
+						scenery.setMoreDesc(moreDesc);
 						scenery.setFullUrl(fullUrl);
 						scenery.setViewCount(viewCount);
 						scenery.setLng(lng);

@@ -14,17 +14,6 @@ import model.Hotel;
 
 public class HotelUtil {
 	
-	public static void main(String[] args){
-		long begin = System.currentTimeMillis();
-		
-//		exportHotel("./hotel.txt");
-		loadHotel("./hotel.txt");
-		
-		long end = System.currentTimeMillis();
-		long delay = end - begin;
-		System.out.println("耗时：" + delay +"ms");
-	}
-	
 	/**
 	 * load hotel from local file
 	 * @param filename
@@ -111,6 +100,8 @@ public class HotelUtil {
 				double price = set.getDouble("price");
 				double commentScore = set.getDouble("comment_score");
 				price = (price < minPrice) ? minPrice : price;
+				double lng = set.getDouble("lng");
+				double lat = set.getDouble("lat");
 				
 				if(!result.containsKey(sid)){
 					Hotel hotel = new Hotel();
@@ -122,6 +113,8 @@ public class HotelUtil {
 					hotel.setPic(pic);
 					hotel.setPrice(price);
 					hotel.setCommentScore(commentScore);
+					hotel.setLat(lat);
+					hotel.setLng(lng);
 					result.put(sid, hotel);
 				}else{
 					Hotel hotel = result.get(sid);
@@ -135,6 +128,8 @@ public class HotelUtil {
 						hotel.setPic(pic);
 						hotel.setPrice(price);
 						hotel.setCommentScore(commentScore);
+						hotel.setLat(lat);
+						hotel.setLng(lng);
 					}
 				}
 				
@@ -142,8 +137,45 @@ public class HotelUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			DbUtil.close();
+//			DbUtil.close();
 		}
 		return result;
 	}
+	
+	private static void convertToLngLat(){
+		String sql = "select * from t_baiduhotel as b";
+		ResultSet set = DbUtil.executeQuery(sql, null);
+		try {
+			while(set.next()){
+				String sid = set.getString("sid");
+				String uid = set.getString("uid");
+				double pointX = set.getDouble("point_x");
+				double pointY = set.getDouble("point_y");
+				double[] geo = MapUtil.mercator2lonLat(pointX, pointY);
+				double lng = geo[0];
+				double lat = geo[1];
+				String sql2 = "update t_baiduhotel set lng=?, lat=? where uid=?";
+				String[] params = {lng+"", lat+"", uid};
+				DbUtil.executeUpdate(sql2, params);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			DbUtil.close();
+		}
+	}
+	
+	public static void main(String[] args){
+		long begin = System.currentTimeMillis();
+		
+//		exportHotel("./hotel.txt");
+//		loadHotel("./hotel.txt");
+		convertToLngLat();
+		
+		long end = System.currentTimeMillis();
+		long delay = end - begin;
+		System.out.println("耗时：" + delay +"ms");
+	}
+	
 }

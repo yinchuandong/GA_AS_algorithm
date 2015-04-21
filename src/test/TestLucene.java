@@ -16,6 +16,7 @@ import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntField;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
@@ -45,7 +46,7 @@ public class TestLucene {
 
 	// Lucene Document的域名
 	public static final String COL_NAME = "sname";
-	public static final String COL_CONT = "view_count";
+	public static final String COL_CONT = "viewCount";
 	
 	// 检索内容
 	String text = "IK Analyzer是一个结合词典分词和文法分词的中文分词开源工具包。它使用了全新的正向迭代最细粒度切分算法。";
@@ -113,14 +114,19 @@ public class TestLucene {
 		
 		Field field11 = new TextField(COL_NAME, "广州白云山", Field.Store.YES);
 		Field field12 = new IntField(COL_CONT, 100, Field.Store.YES);
+		Field field13 = new StoredField("stored", "guangzhou");
 		
 		Field field21 = new TextField(COL_NAME, "内江白云山", Field.Store.YES);
 		Field field22 = new IntField(COL_CONT, 10, Field.Store.YES);
+		Field field23 = new StoredField("stored", "neijiang");
 
+		
 		doc1.add(field11);
 		doc1.add(field12);
+		doc1.add(field13);
 		doc2.add(field21);
 		doc2.add(field22);
+		doc2.add(field23);
 		
 		iWriter.addDocument(doc1);
 		iWriter.addDocument(doc2);
@@ -135,18 +141,18 @@ public class TestLucene {
 		Sort sort = new Sort(new SortField(COL_CONT, SortField.Type.INT, true));
 		BooleanQuery bQuery = new BooleanQuery();
 		
-		Term nameTerm = new Term(COL_NAME, "广州");
-		TermQuery nameQuery = new TermQuery(nameTerm);
-		bQuery.add(nameQuery, BooleanClause.Occur.MUST);
+//		Term nameTerm = new Term(COL_NAME, "广州");
+//		TermQuery nameQuery = new TermQuery(nameTerm);
+//		bQuery.add(nameQuery, BooleanClause.Occur.MUST);
 
-		Term descTerm = new Term("route_desc", "白云山");
+		Term descTerm = new Term("keyword", "长隆欢乐世界");
 		TermQuery descQuery = new TermQuery(descTerm);
 		bQuery.add(descQuery, BooleanClause.Occur.MUST);
 		
-		NumericRangeQuery<Double> priceQuery = NumericRangeQuery.newDoubleRange("sum_price", 400.0, 500.0, true, true);
+		NumericRangeQuery<Double> priceQuery = NumericRangeQuery.newDoubleRange("sumPrice", 400.0, 500.0, true, true);
 		bQuery.add(priceQuery, BooleanClause.Occur.MUST);
 		
-		NumericRangeQuery<Double> dayQuery = NumericRangeQuery.newDoubleRange("visit_day", 2.0, 3.0, false, true);
+		NumericRangeQuery<Double> dayQuery = NumericRangeQuery.newDoubleRange("visitDay", 2.0, 3.0, false, true);
 		bQuery.add(dayQuery, BooleanClause.Occur.MUST);
 		
 		TopDocs topDocs = iSeacher.search(bQuery, 10, sort);
@@ -156,7 +162,7 @@ public class TestLucene {
 		System.out.println("===================================");
 		for (ScoreDoc scoreDoc : scoreDocs) {
 			Document targetDoc = iSeacher.doc(scoreDoc.doc);
-			String routeDesc = targetDoc.get("route_desc");
+			String routeDesc = targetDoc.get("arrange");
 			System.out.println(targetDoc.toString());
 			System.out.println(routeDesc);
 		}

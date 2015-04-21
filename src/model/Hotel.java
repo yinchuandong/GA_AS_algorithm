@@ -16,8 +16,8 @@ public class Hotel implements Comparable<Hotel>{
 	private String pic;
 	private double commentCount;
 	private double commentScore;
-	private double mapX;
-	private double mapY;
+	private double lng;
+	private double lat;
 	private double price;
 	
 	
@@ -71,17 +71,17 @@ public class Hotel implements Comparable<Hotel>{
 	public void setCommentScore(double commentScore) {
 		this.commentScore = commentScore;
 	}
-	public double getMapX() {
-		return mapX;
+	public double getLng() {
+		return lng;
 	}
-	public void setMapX(double mapX) {
-		this.mapX = mapX;
+	public void setLng(double lng) {
+		this.lng = lng;
 	}
-	public double getMapY() {
-		return mapY;
+	public double getLat() {
+		return lat;
 	}
-	public void setMapY(double mapY) {
-		this.mapY = mapY;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 	public double getPrice() {
 		return price;

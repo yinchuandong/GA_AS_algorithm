@@ -123,12 +123,13 @@ public class MGGAMain {
 //		decoder.report(routeList);
 		
 		//step3:对游玩景点进行排序
-		RouteSort sort = new RouteSort(30, 100, 0.8, 0.9);
+		RouteSort sort = new RouteSort(30, 200, 0.8, 0.9);
 		for (Route route : routeList) {
 			ArrayList<Scenery> tmpSceneList = route.getSceneryList();
 			sort.init(tmpSceneList);
 			tmpSceneList = sort.run();
 			route.setSceneryList(tmpSceneList);
+			route.setDistance(sort.getBestLen());
 		}
 		
 		decoder.report(routeList);
