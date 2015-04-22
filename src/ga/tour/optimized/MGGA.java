@@ -272,16 +272,16 @@ public class MGGA {
 			return 0;
 		}
 		
-		//计算该路线酒店的花费, cost = avg_cost * (maxDay - 1)
+		//计算该路线酒店的花费, cost = avg_cost * maxDay
 		double hotelPrice = 0.0;
 		if(curHotels.size() != 0){
 			for (Hotel hotel : curHotels) {
 				hotelPrice += hotel.getPrice();
 			}
-			hotelPrice = (hotelPrice / curHotels.size()) * (maxDay - 1);
+			hotelPrice = (hotelPrice / curHotels.size()) * (maxDay);
 		}else{
-			//如果游玩天数为1天，则不推荐酒店
-			hotelPrice = (maxDay > 1.0) ? (80.0 * (maxDay - 1)) : 0;
+			//如果没有酒店，则按照80元的花费计算
+			hotelPrice = 80.0 * maxDay;
 		}
 		recommendHotelPrice[index] = hotelPrice;
 
