@@ -48,7 +48,7 @@ public class SuggestUtil {
 	
 	public static void main(String[] args){
 		SuggestUtil util = SuggestUtil.getInstance(new File("keyword.txt"));
-		System.out.println(util.suggest("baiyunshan"));
+		System.out.println(util.suggest("bai云shan"));
 
 	}
 	

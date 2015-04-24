@@ -36,6 +36,8 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.BytesRef;
+import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -138,14 +140,14 @@ public class TestLucene {
 	private void seach() throws IOException{
 		iSeacher = new IndexSearcher(DirectoryReader.open(directory));
 		
-		Sort sort = new Sort(new SortField(COL_CONT, SortField.Type.INT, true));
+		Sort sort = new Sort(new SortField(COL_CONT, SortField.Type.INT, false));
 		BooleanQuery bQuery = new BooleanQuery();
 		
 //		Term nameTerm = new Term(COL_NAME, "广州");
 //		TermQuery nameQuery = new TermQuery(nameTerm);
 //		bQuery.add(nameQuery, BooleanClause.Occur.MUST);
 
-		Term descTerm = new Term("keyword", "长隆欢乐世界");
+		Term descTerm = new Term("keyword", "广州");
 		TermQuery descQuery = new TermQuery(descTerm);
 		bQuery.add(descQuery, BooleanClause.Occur.MUST);
 		

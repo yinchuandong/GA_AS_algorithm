@@ -29,6 +29,11 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import util.AppUtil;
 import util.DbUtil;
 
+/**
+ * 将路线存入数据库并解析为lucene格式
+ * @author yinchuandong
+ *
+ */
 public class LuceneMain {
 
 	Analyzer analyzer = null;
