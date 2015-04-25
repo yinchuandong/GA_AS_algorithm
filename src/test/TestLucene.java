@@ -147,11 +147,11 @@ public class TestLucene {
 //		TermQuery nameQuery = new TermQuery(nameTerm);
 //		bQuery.add(nameQuery, BooleanClause.Occur.MUST);
 
-		Term descTerm = new Term("keyword", "广州");
+		Term descTerm = new Term("keyword", "白云山");
 		TermQuery descQuery = new TermQuery(descTerm);
 		bQuery.add(descQuery, BooleanClause.Occur.MUST);
 		
-		NumericRangeQuery<Double> priceQuery = NumericRangeQuery.newDoubleRange("sumPrice", 400.0, 500.0, true, true);
+		NumericRangeQuery<Double> priceQuery = NumericRangeQuery.newDoubleRange("sumPrice", 0.0, 2000.0, true, true);
 		bQuery.add(priceQuery, BooleanClause.Occur.MUST);
 		
 		NumericRangeQuery<Double> dayQuery = NumericRangeQuery.newDoubleRange("visitDay", 2.0, 3.0, false, true);
@@ -162,11 +162,13 @@ public class TestLucene {
 		System.out.println(topDocs.totalHits);
 		
 		System.out.println("===================================");
+		int i=0;
 		for (ScoreDoc scoreDoc : scoreDocs) {
 			Document targetDoc = iSeacher.doc(scoreDoc.doc);
 			String routeDesc = targetDoc.get("arrange");
-			System.out.println(targetDoc.toString());
-			System.out.println(routeDesc);
+//			System.out.println(targetDoc.toString());
+//			System.out.println(routeDesc);
+			System.out.println(++i);
 		}
 	}
 	

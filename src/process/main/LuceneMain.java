@@ -130,8 +130,8 @@ public class LuceneMain {
 		for (File cityDir : cityDirs) {
 			int i = 0;
 			File[] files = cityDir.listFiles();
-			Document doc = new Document();
 			for (File file : files) {
+				Document doc = new Document();
 				String jsonStr = AppUtil.readFile(file);
 				JSONObject obj = JSONObject.fromObject(jsonStr);
 				String uid = obj.getString("uid");
@@ -192,9 +192,8 @@ public class LuceneMain {
 				doc.add(fjsonName);
 				doc.add(farrange);
 				doc.add(fkeyword);
-				
+				iWriter.addDocument(doc);
 			}
-			iWriter.addDocument(doc);
 		}
 		iWriter.close();
 		return;
