@@ -139,7 +139,7 @@ public class SceneryUtil {
 		waitList.add(cityId);
 		try {
 			while(!waitList.isEmpty()){
-				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,img.full_url,d.more_desc FROM t_scenery as s, t_scenery_img as img, t_scenery_des as d WHERE img.sid=s.sid and d.sid=s.sid and s.parent_sid=?";
+				String sql = "SELECT s.sid,s.surl,s.sname,s.ambiguity_sname,s.scene_layer,s.view_count,s.going_count,s.gone_count,s.rating,s.lat,s.lng,s.map_x,s.map_y,s.price_desc,s.recommend_visit_time,img.full_url,d.more_desc FROM t_scenery as s, t_scenery_img as img, t_scenery_des as d WHERE img.sid=s.sid and d.sid=s.sid and s.parent_sid=?";
 				String[] params = {waitList.poll()};
 				ResultSet set = DbUtil.executeQuery(sql, params);
 				while(set.next()){
@@ -156,6 +156,9 @@ public class SceneryUtil {
 					}
 					String fullUrl = set.getString("full_url");
 					int viewCount = set.getInt("view_count");
+					int goingCount = set.getInt("going_count");
+					int goneCount = set.getInt("gone_count");
+					double rating = set.getDouble("rating");
 					double lng = set.getDouble("lng");
 					double lat = set.getDouble("lat");
 					double mapX = set.getDouble("map_x");
@@ -172,6 +175,9 @@ public class SceneryUtil {
 						scenery.setMoreDesc(moreDesc);
 						scenery.setFullUrl(fullUrl);
 						scenery.setViewCount(viewCount);
+						scenery.setGoingCount(goingCount);
+						scenery.setGoneCount(goneCount);
+						scenery.setRating(rating);
 						scenery.setLng(lng);
 						scenery.setLat(lat);
 						scenery.setMapX(mapX);

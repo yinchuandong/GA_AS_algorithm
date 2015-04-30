@@ -201,7 +201,7 @@ public class LuceneMain {
 
 	public static void main(String[] args) throws IOException {
 		 LuceneMain luceneMain = new LuceneMain();
-//		 luceneMain.saveToDB(new File("./routes"));
+		 luceneMain.saveToDB(new File("./routes"));
 		 luceneMain.saveToLucene(new File("./routes"));
 	}
 }

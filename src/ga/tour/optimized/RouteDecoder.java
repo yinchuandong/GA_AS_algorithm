@@ -175,16 +175,13 @@ public class RouteDecoder {
 			System.out.print((i+1) + "/" + routeList.size()+" ");
 			System.out.print(sceneList.size() + "个景点");
 			System.out.print(" 天数：" + route.getVisitDay());
-			System.out.print(" 价格：" + route.getSceneTicket() + "/" + route.getHotelPrice());
+			System.out.print(" 门票：" + route.getSceneTicket() + "/酒店：" + route.getHotelPrice());
 			System.out.println(" 适度：" + route.getHotness());
 			for (Scenery scenery : sceneList) {
 				System.out.print(scenery.getSname() + "-" + scenery.getVisitDay() + ",");
 			}
 			System.out.println();
 			System.out.println();
-			if(i >= 20){
-				break;
-			}
 		}
 	}
 }

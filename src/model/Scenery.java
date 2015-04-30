@@ -10,6 +10,9 @@ public class Scenery implements Comparable<Scenery>{
 	private String moreDesc;
 	private String fullUrl;
 	private int viewCount;
+	private int goingCount;
+	private int goneCount;
+	private double rating;
 	private double lng;
 	private double lat;
 	private double mapX;
@@ -64,6 +67,24 @@ public class Scenery implements Comparable<Scenery>{
 	}
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
+	}
+	public int getGoingCount() {
+		return goingCount;
+	}
+	public void setGoingCount(int goingCount) {
+		this.goingCount = goingCount;
+	}
+	public int getGoneCount() {
+		return goneCount;
+	}
+	public void setGoneCount(int goneCount) {
+		this.goneCount = goneCount;
+	}
+	public double getRating() {
+		return rating;
+	}
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 	public double getLng() {
 		return lng;

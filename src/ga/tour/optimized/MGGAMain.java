@@ -96,7 +96,7 @@ public class MGGAMain {
 	public void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
 		long beginT = System.currentTimeMillis();
 		Scenery city = SceneryUtil.getCityById(cityId);
-		System.out.println("begin: url=" + city.getSurl() + " name=" + city.getSname());
+		System.out.println("begin: url=" + city.getSurl() + " name=" + city.getSname() + " day=" + maxDay);
 		
 		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById(cityId);
 		Runtime.getRuntime().gc();

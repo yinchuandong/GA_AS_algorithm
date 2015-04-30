@@ -105,8 +105,8 @@ public class SearchUtil {
 		NumericRangeQuery<Double> priceQuery = NumericRangeQuery.newDoubleRange("sumPrice", minPrice, maxPrice, true, true);
 		booleanQuery.add(priceQuery, BooleanClause.Occur.MUST);
 		
-		double qMinDay = day == -1 ? 0 : day - 1.0;
-		double qMaxDay = day == -1 ? 100.0 : day;
+		double qMinDay = ((int)day == -1) ? 0 : day - 1.0;
+		double qMaxDay = ((int)day == -1) ? 100.0 : day;
 		NumericRangeQuery<Double> dayQuery = NumericRangeQuery.newDoubleRange("visitDay", qMinDay, qMaxDay, false, true);
 		booleanQuery.add(dayQuery, BooleanClause.Occur.MUST);
 		
@@ -138,6 +138,7 @@ public class SearchUtil {
 				double maxDay = Double.parseDouble(doc.get("maxDay"));
 				double visitDay = Double.parseDouble(doc.get("visitDay"));
 				double distance = Double.parseDouble(doc.get("distance"));
+				String jsonName = doc.get("jsonName");
 				JSONArray arrange = JSONArray.fromObject(doc.get("arrange"));
 				
 				JSONObject rowObj = JSONObject.fromObject("{}");
@@ -155,10 +156,11 @@ public class SearchUtil {
 				rowObj.put("maxDay", maxDay);
 				rowObj.put("visitDay", visitDay);
 				rowObj.put("distance", distance);
+				rowObj.put("jsonName", jsonName);
 				rowObj.put("arrange", arrange);
 				
 				dataArr.add(rowObj);
-				System.out.println(doc);
+//				System.out.println(doc);
 			}
 			
 			if(dataArr.size()  > 0){
@@ -186,9 +188,9 @@ public class SearchUtil {
 	
 	public static void main(String[] args){
 		SearchUtil util = SearchUtil.getInstance(new File("./index/"));
-		util.search("白云山", 0.0, 2000.0, 3.0, "viewCount", false);
+//		util.search("白云山", 0.0, 2000.0, 3.0, "viewCount", false);
 		System.out.println("-------------");
-		util.search("长隆欢乐世界", 0.0, 1200.0, 3.0, "hotness", false);
+		util.search("长隆欢乐世界", 0.0, 1200.0, -1.0, "hotness", false);
 	}
 	
 	
