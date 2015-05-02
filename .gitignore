@@ -1,4 +1,6 @@
 bin/
 routes/
+routes*
+index
 tmp/
 .classpath

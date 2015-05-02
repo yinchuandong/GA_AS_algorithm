@@ -43,15 +43,20 @@ public class MGGAMain {
 	}
 	
 	private void run() throws Exception{
-		double minDay = 2.0;
-		double maxDay = 3.0;
+		double maxDay = 1.0;
+		double minDay = maxDay - 1.0;
 		
+		//广州id=da666bc57594baeb76b3bcf0
 		BufferedReader reader = new BufferedReader(new FileReader(new File("./city_id.txt")));
 		String cityId = null;
 		int i = 1;
 		while((cityId = reader.readLine()) != null){
 			try {
-				taskPool.execute(new RouteThread(i, cityId, hotelMap, minDay, maxDay));
+				Scenery city = SceneryUtil.getCityById(cityId);
+				if(city == null){
+					continue;
+				}
+				taskPool.execute(new RouteThread(i, city, hotelMap, minDay, maxDay));
 				i++;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -62,14 +67,14 @@ public class MGGAMain {
 	
 	private class RouteThread implements Runnable{
 		private int index;
-		private String cityId;
+		private Scenery cityId;
 		private HashMap<String, Hotel> hotelMap;
 		private double minDay;
 		private double maxDay;
 		
-		public RouteThread(int index, String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) {
+		public RouteThread(int index, Scenery city, HashMap<String, Hotel> hotelMap, double minDay, double maxDay) {
 			this.index = index;
-			this.cityId = cityId;
+			this.cityId = city;
 			this.hotelMap = hotelMap;
 			this.minDay = minDay;
 			this.maxDay = maxDay;
@@ -87,18 +92,18 @@ public class MGGAMain {
 	
 	/**
 	 * 计算一个城市
-	 * @param cityId
+	 * @param city
 	 * @param hotelMap
 	 * @param minDay
 	 * @param maxDay
 	 * @throws Exception
 	 */
-	public void calcCity(String cityId, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
+	public void calcCity(Scenery city, HashMap<String, Hotel> hotelMap, double minDay, double maxDay){
 		long beginT = System.currentTimeMillis();
-		Scenery city = SceneryUtil.getCityById(cityId);
+		
 		System.out.println("begin: url=" + city.getSurl() + " name=" + city.getSname() + " day=" + maxDay);
 		
-		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById(cityId);
+		ArrayList<Scenery> sceneryList = SceneryUtil.getSceneryListById(city.getSid());
 		Runtime.getRuntime().gc();
 		long beginM = Runtime.getRuntime().totalMemory();
 

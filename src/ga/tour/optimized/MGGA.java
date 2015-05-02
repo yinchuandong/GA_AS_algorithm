@@ -166,7 +166,7 @@ public class MGGA {
 	
 	/**
 	 * 初始化算法，从file中加载数据文件
-	 * @param cityId 城市的sid
+	 * @param city 城市
 	 * @param minDay 天数下限，开区间
 	 * @param maxDay 天数上限，闭区间
 	 * @param hotelMap 酒店的信息
