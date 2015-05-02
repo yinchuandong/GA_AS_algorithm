@@ -34,7 +34,7 @@ import util.DbUtil;
  * @author yinchuandong
  *
  */
-public class LuceneMain {
+public class RouteMain {
 
 	Analyzer analyzer = null;
 	Directory directory = null;
@@ -42,7 +42,7 @@ public class LuceneMain {
 	IndexReader iReader = null;
 	IndexSearcher iSeacher = null;
 
-	public LuceneMain() {
+	public RouteMain() {
 		try {
 			analyzer = new IKAnalyzer(false);
 			directory = new SimpleFSDirectory(new File("./index/"));
@@ -200,7 +200,7 @@ public class LuceneMain {
 	}
 
 	public static void main(String[] args) throws IOException {
-		 LuceneMain luceneMain = new LuceneMain();
+		 RouteMain luceneMain = new RouteMain();
 		 luceneMain.saveToDB(new File("./routes"));
 		 luceneMain.saveToLucene(new File("./routes"));
 	}
