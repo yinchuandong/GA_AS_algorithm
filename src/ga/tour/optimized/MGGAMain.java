@@ -43,7 +43,7 @@ public class MGGAMain {
 	}
 	
 	private void run() throws Exception{
-		double maxDay = 1.0;
+		double maxDay = 6.0;
 		double minDay = maxDay - 1.0;
 		
 		//广州id=da666bc57594baeb76b3bcf0

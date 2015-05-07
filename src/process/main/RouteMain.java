@@ -68,7 +68,7 @@ public class RouteMain {
 			@Override
 			public boolean accept(File pathname) {
 
-				return pathname.isDirectory();
+				return pathname.isDirectory() && (pathname.getName().equals("aomen") || pathname.getName().equals("beijing"));
 			}
 		});
 
@@ -201,7 +201,7 @@ public class RouteMain {
 
 	public static void main(String[] args) throws IOException {
 		 RouteMain luceneMain = new RouteMain();
-		 luceneMain.saveToDB(new File("./routes"));
+//		 luceneMain.saveToDB(new File("./routes"));
 		 luceneMain.saveToLucene(new File("./routes"));
 	}
 }
